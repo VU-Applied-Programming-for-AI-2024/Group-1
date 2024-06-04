@@ -2,6 +2,9 @@
 // IMAGE OF THE REAL FRONTEND
 ## Brief description of the project
 ## Frontend mockup
-## Team members
+## Team Members
+- Jacob 
+- Kartik
+- Yash
 ## Installation details
 ## Architecture
