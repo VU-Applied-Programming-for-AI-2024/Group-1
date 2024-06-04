@@ -5,4 +5,3 @@
 ## Team members
 ## Installation details
 ## Architecture
-    - High level structure of the repo
