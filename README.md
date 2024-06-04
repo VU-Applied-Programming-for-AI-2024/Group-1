@@ -1,4 +1,4 @@
-# Project Title
+# Our peojcet
 // IMAGE OF THE REAL FRONTEND
 ## Brief description of the project
 ## Frontend mockup
