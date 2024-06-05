@@ -4,5 +4,8 @@
 This project will aim to create a movie recommendation system that will help the user to give optimal movie recommendation based on different generes, and user preference
 ## Frontend mockup
 ## Team members
+Jacob = Backend
+Yash = Frontend + Backend
+Kartik = Frontend
 ## Installation details
 ## Architecture
