@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    /* background-color: black; */
+    color: #03A062;
+}
+
+
+/* body {
+    min-height: 100vh;
+} */
+.hero-img{
+    width: 70%;
+    height: 20em;
+    margin: 0 auto;
+}
+#project-title {
+    font-size: 5rem;
+    /* margin-top: 3rem; */
+    letter-spacing: 20px;
+    padding: 25px;
+}
