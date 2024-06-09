@@ -7,8 +7,7 @@
     margin: 0;
     padding: 0;
     border: none;
-    /* background-color: #225560; */
-    color: #121219;
+    color: #EDF060;
     font-family: var(--font-rubik);
 }
 
@@ -16,7 +15,7 @@ h1, h2, h3 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
 body {
-    background-color: #BACDD9;
+    background-color: #171219;
 }
 
 .hero-img{
@@ -30,7 +29,8 @@ body {
     letter-spacing: 20px;
     padding: 25px;
     font-family: "Bungee Shade", sans-serif;
-    color: #121912;
+    /* color: #121912; */
+    color: #FFFFFF;
 }
 
 .genre-heading {
@@ -43,11 +43,18 @@ body {
 }
 
 footer {
-    background-color: #1D4859;
+    background-color: #310D20;
     height: 8.8rem; /* Temporary */
     width: 100%;
 }
 
-.navbar {
-    background-color: white;
+.navbar a{
+    background-color: #171219;
+    color: #EDF060;
+}
+
+.search-btn {
+    background-color: #225560;
+    color: white;
+
 }
