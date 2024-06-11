@@ -10,3 +10,7 @@ def home():
 @app.route("/genre")
 def genre():
     return render_template("genre.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")

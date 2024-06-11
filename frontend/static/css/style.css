@@ -7,7 +7,7 @@
     margin: 0;
     padding: 0;
     border: none;
-    color: #EDF060;
+    color: #000000;
     font-family: var(--font-rubik);
 }
 
@@ -15,7 +15,8 @@ h1, h2, h3 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
 body {
-    background-color: #171219;
+    /* background-color: #171219; */
+    background-color: #BACDD9;
 }
 
 .hero-img{
@@ -30,7 +31,7 @@ body {
     padding: 25px;
     font-family: "Bungee Shade", sans-serif;
     /* color: #121912; */
-    color: #FFFFFF;
+    color: #2C3E50;
 }
 
 .genre-heading {
@@ -43,18 +44,25 @@ body {
 }
 
 footer {
-    background-color: #310D20;
+    background-color: #1D4859;
     height: 8.8rem; /* Temporary */
     width: 100%;
 }
 
+.navbar {
+    background-color: #4982A6;
+}
 .navbar a{
-    background-color: #171219;
-    color: #EDF060;
+    color: black
 }
 
 .search-btn {
-    background-color: #225560;
+    background-color: #8C2730;
     color: white;
+
+}
+
+.search-btn:hover {
+    background-color: #591B20;
 
 }
