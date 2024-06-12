@@ -19,3 +19,7 @@ def login():
 @app.route("/signup")
 def signup():
     return render_template("signup.html")
+
+@app.route("/info")
+def info():
+    return render_template("review_page.html")

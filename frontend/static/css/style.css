@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&family=Bungee+Shade&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
-:root{
-    --font-rubik : "Rubik", sans-serif;
-}
-/* The styles emetred are not final as there are some flaws that have to be addressed. */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +7,7 @@
     color: #000000;
     color: #f5f5f5;
     color: #2C3E50;
-    font-family: var(--font-rubik);
+    font-family: "Rubik", sans-serif;
 }
 
 h1, h2, h3 {
@@ -25,6 +22,11 @@ a, li, ul {
     text-decoration: none;
     color: #000000;
     list-style-type: none;
+  }
+
+
+.dropdown-menu {
+    background-color: black;
   }
 
 
@@ -62,12 +64,6 @@ a, li, ul {
     background-color: #F39C12;
     color: white;
     margin-right: 3rem;
-
-}
-
-.search-btn:hover {
-    background-color: #F39C12;
-
 }
 
 
