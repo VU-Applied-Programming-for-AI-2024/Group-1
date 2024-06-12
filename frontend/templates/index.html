@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-  <div id="welcome-section" class="d-flex justify-content-center">
-    <h1 id="project-title">Movie Matrix</h1>
+  <div id="welcome-section" class="container-fluid  d-flex justify-content-center">
+    <h1 id="project-title" class="display-2">Movie Matrix</h1>
     <h3 class="mx-auto">Your new go-to place for exploring movie reviews.</h3>
+    <button type="button" class="btn btn-dark signup-btn"><a href="{{ url_for('signup') }}">Sign Up</a></button>
+
   </div>
   <div class="d-flex">
     <img src="../static/assets/hero_image.jpeg" class="hero-img img-fluid" alt="Entrance of the cinema." />

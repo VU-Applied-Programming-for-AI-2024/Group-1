@@ -8,6 +8,8 @@
     padding: 0;
     border: none;
     color: #000000;
+    color: #f5f5f5;
+    color: #2C3E50;
     font-family: var(--font-rubik);
 }
 
@@ -15,9 +17,16 @@ h1, h2, h3 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
 body {
-    /* background-color: #171219; */
-    background-color: #BACDD9;
+    background-color: #ECF0F1;
+    height: 100vh;
 }
+
+a, li, ul {
+    text-decoration: none;
+    color: #000000;
+    list-style-type: none;
+  }
+
 
 .hero-img{
     width: 60%;
@@ -25,44 +34,78 @@ body {
     margin: 0 auto;
 }
 #project-title {
-    font-size: 5rem;
     margin: 0 auto;
     letter-spacing: 20px;
-    padding: 25px;
+    padding-top: 25px;
     font-family: "Bungee Shade", sans-serif;
     /* color: #121912; */
-    color: #2C3E50;
-}
-
-.genre-heading {
-    font-size: 5rem;
+    /* color: #2C3E50; */
+    color: darkgreen
 }
 
 #welcome-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-footer {
-    background-color: #1D4859;
-    height: 8.8rem; /* Temporary */
-    width: 100%;
-}
 
 .navbar {
-    background-color: #4982A6;
+    background-color: #2C3E50;
+    color: white;
 }
 .navbar a{
-    color: black
+  color: white;
 }
 
 .search-btn {
-    background-color: #8C2730;
+    background-color: #F39C12;
     color: white;
+    margin-right: 3rem;
 
 }
 
 .search-btn:hover {
-    background-color: #591B20;
+    background-color: #F39C12;
 
 }
+
+
+.signup-btn {
+    background-color: #E74C3C;
+    margin-bottom: 13px;
+}
+
+label {
+    display: block;
+    margin-top: 13px;
+  }
+  
+  .login-details {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 2em;
+    width: 100%;
+    align-items: center;
+    margin-top: -13px;
+  }
+  
+  #login-btn{
+    margin-top: 13px;
+    color: black;
+  }
+
+  .input-field {
+    color: black;
+    width: 100%;
+    border: 1px solid black;
+  }
+  
+  
+  footer{
+    background-color: #95A5A6;
+  }
+  footer p {
+    color: black;
+    text-align: center;
+  }
