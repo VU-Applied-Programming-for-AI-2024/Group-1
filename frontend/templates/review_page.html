@@ -1,6 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+    <div class="row g-0">
+        <div class="col-md-12">
+            <h1 class="text-center mt-4">Movie Name</h1>
+            <p class="text-center">Director</p>
+            <p class="text-center">Release date</p>
+        </div>
+        <div class="container-fluid pt-md-4">
+            <div class="row mb-4">
+                <div class="col-md-5">
+                    <img src="../static/assets/hero_image.jpeg"
+                        alt="Movie poster." class="img-fluid mb-3">
+                </div>
+                <div class="col-md-6 pt-md-4">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 w-100">
+                            <h3 class="pt-xs-4">Plot</h3>
+                            Pictures move consecutively. 
+                            <h3 class="mt-3">Ratings: </h3>
+                            <div class="col-6 mt-3 mb-3">
+                                <strong>
+                                    <form action="#" class="read-btn" method="POST">
+                                        <button type="submit" class="read-btn" aria-label="film icon">
+                                        </button>
 
+                                        <button type="submit" class="read-btn" aria-label="film icon">
+                                        </button>
+
+                                    </form>
+
+                                    <span class="text-secondary"><i class="fa-solid fa-film"></i></span>
+
+                                    <span class="text-secondary">Favourite </span>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-dark signup-btn"><a href="{{ url_for('signup') }}">Add Review</a></button>
+
+                    <div class="row ps-2 pe-2">
+                        <h3 class="text-center mb-4">Reviews:</h3>
+                        <div class="col-md-8 card mb-4 mt-3 review-form">
+                            <div class="card-body fst-italic">
+                                <div>
+                                    Loved how the picture moved consecutively. 
+                                    <p>
+                                        -Username
+                                    </p>
+                                    <p class="text-date">
+                                        Uploaded on: 13-06-2023
+                                    </p>
+                                    <a class=" btn edit-btn" href="#">Edit</a>
+                                    <a class=" btn delete-btn" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </div>
 
 {% endblock %}
