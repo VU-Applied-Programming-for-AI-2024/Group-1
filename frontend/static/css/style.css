@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&family=Bungee+Shade&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    color: #000000;
+    color: #f5f5f5;
+    color: #2C3E50;
+    font-family: "Rubik", sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: "Averia Gruesa Libre", system-ui;
+}
+body {
+    background-color: #ECF0F1;
+    height: 100vh;
+}
+
+a, li, ul {
+    text-decoration: none;
+    color: #000000;
+    list-style-type: none;
+  }
+
+
+.dropdown-menu {
+    background-color: black;
+  }
+
+
+.hero-img{
+    width: 60%;
+    height: 23em;
+    margin: 0 auto;
+}
+#project-title {
+    margin: 0 auto;
+    letter-spacing: 20px;
+    padding-top: 25px;
+    font-family: "Bungee Shade", sans-serif;
+    /* color: #121912; */
+    /* color: #2C3E50; */
+    color: darkgreen
+}
+
+#welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.navbar {
+    background-color: #2C3E50;
+    color: white;
+}
+.navbar a{
+  color: white;
+}
+
+.search-btn {
+    background-color: #F39C12;
+    color: white;
+    margin-right: 3rem;
+}
+
+
+.signup-btn {
+    background-color: #E74C3C;
+    margin-bottom: 13px;
+}
+
+label {
+    display: block;
+    margin-top: 13px;
+  }
+  
+  .login-details {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 2em;
+    width: 100%;
+    align-items: center;
+    margin-top: -13px;
+  }
+  
+  #login-btn{
+    margin-top: 13px;
+    color: black;
+  }
+
+  .input-field {
+    color: black;
+    width: 100%;
+    border: 1px solid black;
+  }
+  
+  
+  footer{
+    background-color: #95A5A6;
+  }
+  footer p {
+    color: black;
+    text-align: center;
+  }
