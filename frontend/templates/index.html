@@ -10,4 +10,89 @@
     <img src="../static/assets/hero_image.jpeg" class="hero-img img-fluid" alt="Entrance of the cinema." />
     <h3 class="mt-3"><strong>Trending</strong></h3>
   </div>
+  <div id="cardCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row">
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row">
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-4 mb-5">
+            <a href="{{url_for('info')}}">
+              <div class="card">
+                <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
+                <div class="card-body">
+                  <h5 class="card-title">Movie name</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Add more carousel-item divs if you have more cards to display -->
+    </div>
+    <a class="carousel-control-prev" href="#cardCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#cardCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+<!-- Add Bootstrap and jQuery scripts if not already included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
