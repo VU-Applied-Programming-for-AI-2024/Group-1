@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from tmdbv3api import TMDb, Movie
+from typing import Dict, Any
 
 
 app = Flask(__name__)
@@ -9,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 tmdb = TMDb()
-tmdb.api_key = '1a674da5bbed27d22ed3a066a5899ca1' # replace with your API key 
+tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849' 
 
 movie_api = Movie()
 
@@ -23,12 +24,16 @@ class MovieModel(db.Model):
 
     def __repr__(self):
         return f'<Movie {self.title}>'
+    
+popular_movie_dict: Dict[str, Dict[str, Any]] = {}
 
 with app.app_context():
     db.create_all()
-
     popular_movies = movie_api.popular()
     for movie in popular_movies:
+        popular_movie_dict[movie.title] = {"ID": movie.id, "Overview": movie.overview, "Release Date": movie.release_date,
+                                           "Poster Path": movie.poster_path, "Vote Average": f"{movie.vote_average}\n"}
+        print(f"{movie.title}: {popular_movie_dict[movie.title]}, \n")
         existing_movie = MovieModel.query.filter_by(id=movie.id).first()
         if not existing_movie:
             new_movie = MovieModel(
@@ -39,5 +44,4 @@ with app.app_context():
                 poster_path=movie.poster_path,
                 vote_average=movie.vote_average
             )
-            db.session.add(new_movie)
             db.session.commit()
