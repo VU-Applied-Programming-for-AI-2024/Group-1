@@ -76,8 +76,12 @@ label {
     display: block;
     margin-top: 13px;
   }
-  
-  .login-details {
+
+  .carousel-control-next-icon, .carousel-control-prev-icon {
+    color: #000000;
+    background-color: #95A5A6;
+  }
+  .login-details, .signup-details{
     display: flex;
     flex-direction: column;
     padding: 1em 2em;
