@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 tmdb = TMDb()
-tmdb.api_key = '1a674da5bbed27d22ed3a066a5899ca1' # replace with your API key 
+tmdb.api_key = '1a674da5bbed27d22ed3a066a5899ca1' 
 
 movie_api = Movie()
 
