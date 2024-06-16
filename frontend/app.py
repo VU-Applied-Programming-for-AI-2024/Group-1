@@ -23,4 +23,7 @@ def signup():
 @app.route("/info")
 def info():
     return render_template("review_page.html")
+@app.route("/search")
+def search_bar():
+    return
 
