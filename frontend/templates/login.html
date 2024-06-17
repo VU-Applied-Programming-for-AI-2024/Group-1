@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block content%}
+{% block content %}
 <div class="container d-flex flex-column mx-auto">
     <h2 class="mx-auto mt-5">Login</h2>
     <p class="mx-auto mt-1">Please enter your login details below</p>
 </div>
 
 <div class="login-details mt-n2">
-    <form action="POST" id="login-form">
+    <form action="{{ url_for('index') }}" method="POST" id="login-form">
         <label for="user">Username*: </label>
         <input class="input-field" type="text" id="user" name="username" required>
         <label for="password">Password*: </label>
         <input class="input-field" type="password" id="password" name="password" required>
+        <button type="submit" id="login-btn" class="btn btn-dark signup-btn">Login</button>
     </form>
-    <button type="submit" id="login-btn" class="btn btn-dark signup-btn" form="login-form">Login</button>
 </div>
 
 <div class="d-flex justify-content-center">
