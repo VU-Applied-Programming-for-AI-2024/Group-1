@@ -1,10 +1,21 @@
 from flask import Flask, render_template
+from dotenv import load_dotenv
+import json
+import requests
+import os
+
 
 app = Flask(__name__)
 
+load_dotenv()
+api_key = os.environ['API_KEY']
+base_url = f'https://api.themoviedb.org/3'
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    response = f'{base_url}/trending/movie/day?api_key={api_key}'
+    trending_movies = requests.get(response).json()
+    return render_template("index.html", data=trending_movies['results'])
 
 
 @app.route("/genre")
@@ -23,7 +34,7 @@ def signup():
 @app.route("/info")
 def info():
     return render_template("review_page.html")
-@app.route("/search")
-def search_bar():
-    return
 
+
+if __name__ == "__main__":
+    app.run()

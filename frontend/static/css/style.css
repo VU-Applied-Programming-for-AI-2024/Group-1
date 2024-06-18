@@ -13,6 +13,7 @@
 h1, h2, h3 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
+
 body {
     background-color: #ECF0F1;
     height: 100vh;
@@ -76,8 +77,9 @@ label {
     display: block;
     margin-top: 13px;
   }
-  
-  .login-details {
+
+
+  .login-details, .signup-details{
     display: flex;
     flex-direction: column;
     padding: 1em 2em;
@@ -97,7 +99,13 @@ label {
     border: 1px solid black;
   }
   
-  
+
+  .home-movie-card {
+    height: 20vh;
+    width: 100%;
+    background-color: #000000;
+    box-shadow: #2C3E50;
+  }
   footer{
     background-color: #95A5A6;
   }
@@ -105,3 +113,16 @@ label {
     color: black;
     text-align: center;
   }
+
+  .cards-style{
+    /* width: 13rem; */
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 13px;
+  }
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: #000000;
+  color: white;
+}
