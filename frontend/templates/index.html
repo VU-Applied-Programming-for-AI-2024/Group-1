@@ -12,7 +12,7 @@
 </div>
 <div class="container">
   <div class="row d-flex flex-row">
-    <div> 
+    <div d-flex> 
       <div id="carouselExample" class="carousel slide mt-4">
         <div class="carousel-inner justify-content-space-evenly">
           {% set per_slide = 5 %}
@@ -20,7 +20,7 @@
           <div class="carousel-item {% if i == 0 %}active{% endif %}">
             <div class="d-flex">
               {% for movie in data[i:i + per_slide] %}
-              <a href="{{ url_for('info') }}" class="cards-style">
+              <a href="{{ url_for('info', movie_id=movie.id) }}" class="cards-style">
               <div class="card">
                 <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} poster">
                 <div class="card-body">
@@ -38,7 +38,7 @@
           <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true" "></span>
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
