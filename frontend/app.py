@@ -12,6 +12,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
 class User(db.Model, UserMixin):
+    """
+    columns for table of users in database
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
@@ -19,6 +22,9 @@ class User(db.Model, UserMixin):
                                                         # hashed version of password which is usually longer
     
 class RegistrationForm(FlaskForm):
+    """
+    defines attributes of each input field under the signup page
+    """
     username = StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
     
@@ -34,6 +40,11 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
     
     def validate_username(self, username):
+        """
+        validates that each username is unique
+        param: username: what users enter under the input field 'username'
+        raises: ValidationError: if the username that a user enters is already in the database
+        """
         existing_username = User.query.filter_by(
             username=username.data).first()
 
@@ -43,6 +54,11 @@ class RegistrationForm(FlaskForm):
             )
             
     def validate_email(self, email):
+        """
+        validates that each email is unique
+        :param: username: what users enter under the input field 'email'
+        :raises: ValidationError: if the email that a user enters is already in the database
+        """
         existing_email = User.query.filter_by(
             email=email.data).first()
         
@@ -52,6 +68,9 @@ class RegistrationForm(FlaskForm):
             )
             
 class LoginForm(FlaskForm):
+    """
+    defines the attributes of each input field in the login page
+    """
     username = StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
     
