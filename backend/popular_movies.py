@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 tmdb = TMDb()
-tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849' 
+tmdb.api_key = '1a674da5bbed27d22ed3a066a5899ca1' 
 
 movie_api = Movie()
 
@@ -45,3 +45,5 @@ with app.app_context():
                 vote_average=movie.vote_average
             )
             db.session.commit()
+            
+            
