@@ -70,15 +70,25 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
     
     def validate_user(self, username):
+        """
+        validates that users enter a username that already exists
+        param: username: what the user enters in the username input field
+        raises: ValidationError: if the user enters a username that isn't in the database
+        """
         user = User.query.filter_by(username=username.data).first()
         
         if not user:
             raise ValidationError("Please enter a valid username")
         
     def validate_password(self, password):
+        """
+        validates that users enter the correct password
+        param: password: what the user enters in the password input field
+        :raises: ValidationError: if 
+        """
         user = User.query.filter_by(username=self.username.data).first()
         
-        if user and bcrypt.check_password_hash(user.password, password.data):
+        if user and bcrypt.check_password_hash(user.password, password.data) == False:
             raise ValidationError("Your password is incorrect")
         
 
