@@ -6,11 +6,22 @@
 </div>
 
 <div class="login-details mt-n2">
-    <form action="{{ url_for('home') }}" method="POST" id="login-form">
-        <label for="user">Username*: </label>
-        <input class="input-field" type="text" id="user" name="username" placeholder="Username" required>
-        <label for="password">Password*: </label>
-        <input class="input-field" type="password" id="password" name="password" required>
+    <form method="POST" action="/login" id="login-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="input-field form-control") }}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="input-field form-control") }}
+            {% if form.password.errors %}
+                <div class="text-danger">{{ form.password.errors[0] }}</div>
+            {% endif %}
+        </div>
         <button type="submit" id="login-btn" class="btn btn-dark signup-btn">Login</button>
     </form>
 </div>
