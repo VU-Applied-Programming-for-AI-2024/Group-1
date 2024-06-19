@@ -29,7 +29,7 @@ def search(query, filter_typ, genre_id, sort_opt):
 def search_results(results, typ):
     results_lst = [] 
     
-    lst = ['title','overview','rating','poster_path']
+    lst = ['title','overview','rating','poster_path','release_date','popularity']
 
     for result in results:
         results_dct = {}
@@ -57,6 +57,16 @@ def search_results(results, typ):
                     results_dct[l] = result.poster_path
                 else:
                     results_dct[l] = 'Poster not available'
+            if l == "release_date":
+                if hasattr(result,'release_date'):
+                    results_dct[l] = result.release_date
+                else:
+                    results_dct[l] = 'Release date not available'
+            if l == "popularity":
+                if hasattr(result,'popularity'):
+                    results_dct[l] = result.popularity
+                else:
+                    results_dct[l] = 'Popularity not available'
         results_dct["type"] = typ
         results_lst.append(results_dct)
     return results_lst
