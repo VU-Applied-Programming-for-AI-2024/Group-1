@@ -1,13 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash
+import sys
+import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
+import requests
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
+import search
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+api_key = '46cbbac59c440a0b0490ad2adad2b849'
+base_url = 'https://api.themoviedb.org/3'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
@@ -60,7 +68,9 @@ class LoginForm(FlaskForm):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    response = f'{base_url}/trending/movie/day?api_key={api_key}'
+    trending_movies = requests.get(response).json()
+    return render_template("index.html", data = trending_movies['results'])
 
 @app.route("/genre")
 def genre():
@@ -103,6 +113,18 @@ def info(movie_id):
             director_name = person['name']
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
+@app.route('/search_route', methods=['POST'])
+def search_route():
+    query = request.form.get('query')
+    filter_typ = request.form.get('filter', 'all')
+    genre_id = request.form.get('genre')
+    sort_opt = request.form.get('sort_by')
+    results = search.search(query, filter_typ, genre_id, sort_opt)
+
+    print("Query:", query)
+    print("Results:", type(results))
+    
+    return render_template('search.html', query=query, results=results)
 
 if __name__ == '__main__':
     with app.app_context():

@@ -1,41 +1,35 @@
 import sys
 from tmdbv3api import TMDb, Movie, TV 
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movies.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movies.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy()
+# db.init_app(app)
 
 tmdb = TMDb()
 tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
-sys.stdout.reconfigure(encoding='utf-8')
-class SearchLog(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    search_query = db.Column(db.String(255), nullable=False)
-    search_type = db.Column(db.String(50), nullable=False)
 
-class SearchHistory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    query = db.Column(db.String(200), nullable=False)
-    results = db.Column(db.JSON, nullable=False)
+# class SearchLog(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     search_query = db.Column(db.String(255), nullable=False)
+#     search_type = db.Column(db.String(50), nullable=False)
 
-    def __repr__(self) -> str:
-        return  f"<SearchHistory(query='{self.query}', results='{self.results}')>"
+# class SearchHistory(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     query = db.Column(db.String(200), nullable=False)
+#     results = db.Column(db.JSON, nullable=False)
 
-with app.app_context():
-    db.create_all()
+#     def __repr__(self) -> str:
+#         return  f"<SearchHistory(query='{self.query}', results='{self.results}')>"
 
-@app.route('/search', methods=['GET'])
-def search():
-    query = request.args.get('query')
-    filter_typ = request.args.get('filter')
-    genre_id = request.args.get('genre')
-    sort_opt = request.args.get('sort_by')
+# with app.app_context():
+#     db.create_all()
 
-    results = []
+def search(query, filter_typ, genre_id, sort_opt):
     sys.stdout.reconfigure(encoding='utf-8')
     results = []
     if filter_typ == "movie" or filter_typ == "all":
@@ -49,11 +43,11 @@ def search():
     if sort_opt:
         results = sorting_it(results, sort_opt)  
 
-    search_entry = SearchHistory(query=query, results=results)
-    db.session.add(search_entry)
-    db.session.commit()
+    # search_entry = SearchHistory(query=query, results=results)
+    # db.session.add(search_entry)
+    # db.session.commit()
 
-    return jsonify(results)
+    return results
 
 
 def search_results(results, typ):
@@ -65,14 +59,14 @@ def search_results(results, typ):
         results_dct = {}
         for l in lst:
             if l == "title":
-                if typ == "movie":
+                if hasattr(result,'title'):
                     results_dct[l] = result.title
-                else:
-                    results_dct[l] = result.name
+                elif hasattr(result,'name'):
+                    results_dct[l] = result.name    
             if l == "overview":
                 results_dct[l] = result.overview
             if l == "rating":
-                results_dct[l] == result.vote_average
+                results_dct[l] = result.vote_average
             if l == "poster_path":
                 results_dct[l] = result.poster_path
         results_dct["type"] = typ
@@ -86,8 +80,8 @@ def filter_genre(results, genre_id):
     return filtered_lst
 def sorting_it(results, sort_by):
     if sort_by == 'date':
-        return sorted(results, key=lambda x: x['release_date'], reverse=True)
+        return sorted(results, key=lambda x: x.get('release_date', ''), reverse=True)
     elif sort_by == 'rating':
-        return sorted(results, key=lambda x: x['rating'], reverse=True)
+        return sorted(results, key=lambda x: x.get('rating', 0), reverse=True)
     return results
 

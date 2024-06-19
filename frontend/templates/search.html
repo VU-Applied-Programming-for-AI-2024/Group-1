@@ -1,7 +1,22 @@
 {% extends "base.html" %}
-{% block content %}
 
-<div class= 'container'>
-    <h1>Search</h1>
+{% block content %}
+<div class='container'>
+    <h1>Search Results for "{{ query }}"</h1>
+    <div class="row">
+        {% for movie in results %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} poster">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.overview }}</p>
+                    <p class="card-text"><small class="text-muted">Rating: {{ movie.rating }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
+
