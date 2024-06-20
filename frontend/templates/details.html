@@ -14,6 +14,15 @@
         <p> Release Date: {{result.release_date}}</p>
         <p> Rating: {{result.rating}}</p>
         <p><strong>Review:</strong> {{result.review}}</p>
+        <p><small>Author: {{result.author}}</small></p>
+        <p><strong>Cast:</strong></p>
+        <ul>
+            {% for member in result.cast %}
+                <li>{{ member }}</li>
+            {% endfor %}
+        </ul>
+        
+
 
 
     </div>

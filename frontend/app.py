@@ -12,6 +12,7 @@ import requests
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 import search
 from tmdbv3api import TV, Movie 
+import json
 
 
 app = Flask(__name__)
@@ -27,6 +28,10 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 my_movie = Movie()
 my_tv = TV()
+@app.context_processor
+def utility_processor():
+    return dict(json=json)
+
 class User(db.Model, UserMixin):
     """
     columns for table of users in database
@@ -170,6 +175,10 @@ def details(media_type):
     id = request.args.get("id")
     release_date = request.args.get("release_date")
     review = request.args.get("review")
+    author = request.args.get("author")
+    cast_json = request.args.get("cast")
+
+    cast = json.loads(cast_json) if cast_json else []
 
     result = {
         'id': id,
@@ -179,9 +188,11 @@ def details(media_type):
         'poster_path': poster_path,
         'release_date': release_date,
         'review': review,
+        'author': author,
+        'cast' : cast,
         'type': media_type
     }
-
+    print(type(result['cast']))
     return render_template('details.html', result=result, media_type=media_type)
 
 if __name__ == '__main__':
