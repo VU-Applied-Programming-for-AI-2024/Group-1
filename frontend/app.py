@@ -11,6 +11,7 @@ from flask_bcrypt import Bcrypt
 import requests
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 import search
+from tmdbv3api import TV, Movie 
 
 
 app = Flask(__name__)
@@ -24,6 +25,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+my_movie = Movie()
+my_tv = TV()
 class User(db.Model, UserMixin):
     """
     columns for table of users in database
@@ -158,6 +161,26 @@ def search_route():
     print("Results:", type(results))
     
     return render_template('search.html', query=query, results=results)
+@app.route("/details/<media_type>")
+def details(media_type):
+    title = request.args.get("title")
+    overview = request.args.get("overview")
+    rating = request.args.get("vote_average")
+    poster_path = request.args.get("poster_path")
+    id = request.args.get("id")
+    release_date = request.args.get("release_date")
+
+    result = {
+        'id': id,
+        'title': title,
+        'overview': overview,
+        'rating': rating,
+        'poster_path': poster_path,
+        'release_date': release_date,
+        'type': media_type
+    }
+
+    return render_template('details.html', result=result, media_type=media_type)
 
 if __name__ == '__main__':
     with app.app_context():
