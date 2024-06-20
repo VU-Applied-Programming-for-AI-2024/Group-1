@@ -1,35 +1,133 @@
-from flask import Flask, render_template
-from dotenv import load_dotenv
-import json
-import requests
+from flask import Flask, render_template, redirect, request, url_for, flash
+import sys
 import os
+from flask import Flask, render_template, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
+from flask_bcrypt import Bcrypt
+import requests
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
+import search
+from tmdbv3api import TV, Movie 
 
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+api_key = '46cbbac59c440a0b0490ad2adad2b849'
+base_url = 'https://api.themoviedb.org/3'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+app.config['SECRET_KEY'] = 'thisisasecretkey'
+db = SQLAlchemy(app)
 
-load_dotenv()
-api_key = os.environ['API_KEY']
-base_url = f'https://api.themoviedb.org/3'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+my_movie = Movie()
+my_tv = TV()
+class User(db.Model, UserMixin):
+    """
+    columns for table of users in database
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=False) # Note: 80 max length here and 20 in registration form because database takes in
+                                                        # hashed version of password which is usually longer
+                                        
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+ 
+class RegistrationForm(FlaskForm):
+    """
+    defines attributes of each input field under the signup page
+    """
+    username = StringField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "Username"})
+
+    password = PasswordField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "Password"})
+    
+    confirm_password = PasswordField('Confirm Password', validators=[
+        InputRequired(), EqualTo('password')], render_kw={"placeholder": "Confirm Password"})
+    
+    submit = SubmitField("Register")
+    
+    def validate_username(self, username):
+        """
+        validates that each username is unique
+        param: username: what users enter under the input field 'username'
+        raises: ValidationError: if the username that a user enters is already in the database
+        """
+        existing_username = User.query.filter_by(
+            username=username.data).first()
+
+        if existing_username:
+            raise ValidationError(
+                "This username already exists."
+            )
+            
+class LoginForm(FlaskForm):
+    """
+    defines the attributes of each input field in the login page
+    """
+    username = StringField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "Username"})
+    
+    password = PasswordField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "password"})
+    
+    submit = SubmitField('Login')
+    
+    def validate_user(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        
+        if not user:
+            raise ValidationError("Please enter a valid username")
+        
+    def validate_password(self, password):
+        user = User.query.filter_by(username=self.username.data).first()
+        
+        if user and bcrypt.check_password_hash(user.password, password.data):
+            raise ValidationError("Your password is incorrect")
+        
 
 @app.route("/")
 def home():
     response = f'{base_url}/trending/movie/day?api_key={api_key}'
     trending_movies = requests.get(response).json()
-    return render_template("index.html", data=trending_movies['results'])
-
+    return render_template("index.html", data = trending_movies['results'])
 
 @app.route("/genre")
 def genre():
     return render_template("genre.html")
 
-
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            flash("Invalid username or password")
+    return render_template("login.html", form=form)
 
-@app.route("/signup")
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
-    return render_template("signup.html")
+    form = RegistrationForm()
+     
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        new_user = User(username=form.username.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Your account has been created, you are now able to login.')
+        return redirect(url_for('login'))
+    return render_template("signup.html", form=form)
 
 @app.route("/info/<movie_id>")
 def info(movie_id):
@@ -51,6 +149,42 @@ def info(movie_id):
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
 
+@app.route('/search_route', methods=['POST'])
+def search_route():
+    query = request.form.get('query')
+    filter_typ = request.form.get('filter', 'all')
+    genre_id = request.form.get('genre')
+    sort_opt = request.form.get('sort_by')
+    results = search.search(query, filter_typ, genre_id, sort_opt)
 
-if __name__ == "__main__":
-    app.run()
+    print("Query:", query)
+    print("Results:", type(results))
+    
+    return render_template('search.html', query=query, results=results)
+@app.route("/details/<media_type>")
+def details(media_type):
+    title = request.args.get("title")
+    overview = request.args.get("overview")
+    rating = request.args.get("vote_average")
+    poster_path = request.args.get("poster_path")
+    id = request.args.get("id")
+    release_date = request.args.get("release_date")
+    review = request.args.get("review")
+
+    result = {
+        'id': id,
+        'title': title,
+        'overview': overview,
+        'rating': rating,
+        'poster_path': poster_path,
+        'release_date': release_date,
+        'review': review,
+        'type': media_type
+    }
+
+    return render_template('details.html', result=result, media_type=media_type)
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)

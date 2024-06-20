@@ -21,13 +21,13 @@ body {
 
 a, li, ul {
     text-decoration: none;
-    color: #000000;
+    color: #000010;
     list-style-type: none;
   }
 
 
 .dropdown-menu {
-    background-color: black;
+    background-color: rgb(255, 253, 253);
   }
 
 
