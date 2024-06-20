@@ -129,6 +129,19 @@ label {
   color: white;
 }
 
+.cards-style{
+  /* width: 13rem; */
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 13px;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+background-color: #000000;
+color: white;
+}
+
 .carousel-control-prev {
   left: -10%;
 }
