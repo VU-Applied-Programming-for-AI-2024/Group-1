@@ -25,14 +25,31 @@ def search(query, filter_typ, genre_id, sort_opt):
 
     return results
 
+def media_type(id):
+    try:
 
+        my_movie.details(id)
+        return "movie"
+    
+    except:
+        pass
+    try:
+
+        my_tv.details(id)
+        return "tv"
+    
+    except:
+        pass
+    
+    return "unknown"
 def search_results(results, typ):
     results_lst = [] 
     
-    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id']
-
+    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review']
+    id_lst = []
     for result in results:
         results_dct = {}
+        id_lst.append(result.id)
         for l in lst:
             if l == "title":
                 if hasattr(result,'title'):
@@ -72,6 +89,24 @@ def search_results(results, typ):
                     results_dct[l] = result.id
                 else:
                     results_dct[l] = 'Id not avalaible'
+            if l == 'review':
+                for id in id_lst:
+                    if media_type(id) == "movie" and hasattr(my_movie,'reviews'):
+                        movie_review = my_movie.reviews(id)
+                        for review in movie_review['results']:
+                            for key, value in review.items():
+                                if key == 'content':
+                                    results_dct[l] = value
+                    elif media_type(id) == "tv" and hasattr(my_tv,'reviews'):
+                        tv_review = my_tv.reviews(id)
+                        for review in tv_review['results']:
+                            for key, value in review.items():
+                                if key == 'content':
+                                    results_dct[l] = value
+
+                    else:
+                        results_dct[l] = 'review not available'
+        
         results_dct["type"] = typ
         results_lst.append(results_dct)
     return results_lst

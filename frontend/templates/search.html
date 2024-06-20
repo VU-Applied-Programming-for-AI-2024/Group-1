@@ -37,7 +37,7 @@
         {% for result in results %}
         <div class="col-md-4 mb-4">
             <div class="card">
-                <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date) }}">
+                <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date, review = result.review) }}">
                     <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
                 </a>
                 <div class="card-body">

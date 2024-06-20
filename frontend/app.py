@@ -169,6 +169,7 @@ def details(media_type):
     poster_path = request.args.get("poster_path")
     id = request.args.get("id")
     release_date = request.args.get("release_date")
+    review = request.args.get("review")
 
     result = {
         'id': id,
@@ -177,6 +178,7 @@ def details(media_type):
         'rating': rating,
         'poster_path': poster_path,
         'release_date': release_date,
+        'review': review,
         'type': media_type
     }
 
