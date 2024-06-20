@@ -26,9 +26,9 @@ a, li, ul {
   }
 
 
-.dropdown-menu {
+/* .dropdown-menu {
     background-color: rgb(255, 253, 253);
-  }
+  } */
 
 
 .hero-img{
@@ -114,12 +114,16 @@ label {
     text-align: center;
   }
 
-  .cards-style{
-    /* width: 13rem; */
+  .trending-cards {
+    width: 20vh;
+    height: 35vh;
+  }
+  /* .cards-style{
+    width: 13rem;
     display: flex;
     justify-content: space-between;
     padding: 13px;
-  }
+  } */
 
   .card-img-top {
     height: 20vh;
@@ -127,6 +131,7 @@ label {
 .carousel-control-prev-icon, .carousel-control-next-icon {
   background-color: #000000;
   color: white;
+  padding: 1px;
 }
 
 .cards-style{
@@ -142,10 +147,10 @@ background-color: #000000;
 color: white;
 }
 
-.carousel-control-prev {
+/* .carousel-control-prev {
   left: -10%;
 }
 
 .carousel-control-next {
   right: -10%;
-}
+} */
