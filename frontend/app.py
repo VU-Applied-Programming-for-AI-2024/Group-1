@@ -78,18 +78,20 @@ class LoginForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         
         if not user:
-            raise ValidationError("Please enter a valid username")
+            flash("Please enter a valid username")
+            raise ValidationError("Invalid Username")
         
     def validate_password(self, password):
         """
         validates that users enter the correct password
         param: password: what the user enters in the password input field
-        :raises: ValidationError: if 
+        :raises: ValidationError: if the user enters an incorrect password
         """
         user = User.query.filter_by(username=self.username.data).first()
         
         if user and bcrypt.check_password_hash(user.password, password.data) == False:
-            raise ValidationError("Your password is incorrect")
+            flash("Your password is incorrect")
+            raise ValidationError("Invalid Password")
         
 
 @app.route("/")
@@ -108,8 +110,6 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('home'))
-        else:
-            flash("Invalid username or password")
     return render_template("login.html", form=form)
 
 @app.route("/signup", methods=['GET', 'POST'])
