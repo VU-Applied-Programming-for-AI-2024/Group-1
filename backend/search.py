@@ -71,7 +71,10 @@ def search_results(results, typ):
     id_lst = []
     for result in results:
         results_dct = {}
-        id_lst.append(result.id)
+        if hasattr(result,"id"):
+            id_lst.append(result.id)
+        else:
+            id_lst.append("does not have ID")
         for l in lst:
             if l == "title":
                 if hasattr(result,'title'):
