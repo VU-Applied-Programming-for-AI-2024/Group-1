@@ -3,36 +3,19 @@
 {% block content %}
 <div class='container'>
     <h1>Search Results for "{{ query }}"</h1>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-          <button>Filter</button>
-        </a>
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{{ url_for('genre') }}">Movie</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a class="dropdown-item" href="{{ url_for('genre') }}">TV</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a class="dropdown-item" href="{{ url_for('genre') }}">Genres</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
         </ul>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              <button>Sort</button>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Populartity</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Rating</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Release date</a></li>
-            </ul>
+        <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='popularity') }}">Popularity</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='vote_average') }}">Rating</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='release_date') }}">Release Date</a></li>
+        </ul>
+    </div>
     <div class="row">
         {% for result in results %}
         <div class="col-md-4 mb-4">
@@ -56,4 +39,3 @@
     </div>
 </div>
 {% endblock %}
-

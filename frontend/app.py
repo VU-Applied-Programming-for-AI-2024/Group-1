@@ -154,16 +154,16 @@ def info(movie_id):
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
 
-@app.route('/search_route', methods=['POST'])
+@app.route('/search_route', methods=['GET','POST'])
 def search_route():
-    query = request.form.get('query')
-    filter_typ = request.form.get('filter', 'all')
-    genre_id = request.form.get('genre')
-    sort_opt = request.form.get('sort_by')
+    query = request.form.get('query') or request.args.get('query')
+    filter_typ = request.args.get('filter_typ', "all")
+    genre_id = request.args.get('genre')
+    sort_opt = request.args.get('sort_opt')
     results = search.search(query, filter_typ, genre_id, sort_opt)
 
     print("Query:", query)
-    print("Results:", type(results))
+    print("Results:", (results))
     
     return render_template('search.html', query=query, results=results)
 @app.route("/details/<media_type>")

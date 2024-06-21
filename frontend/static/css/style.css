@@ -157,6 +157,12 @@ color: white;
 padding: 1px;
 }
 
+.filter, .sort {
+  background-color: #F39C12;
+  color: black;
+  align-items: center;
+  margin: 13px;
+}
 /* .carousel-control-prev {
   left: -10%;
 }

@@ -11,16 +11,18 @@ my_tv = TV()
 def search(query, filter_typ, genre_id, sort_opt):
     sys.stdout.reconfigure(encoding='utf-8')
     results = []
-    if filter_typ == "movie" or filter_typ == "all":
+    if filter_typ in ['movie', 'all']:
         movie_results = my_movie.search(query)
-        results.extend(search_results(movie_results,filter_typ))
-    if filter_typ == "tv" or filter_typ == "all":
+        results.extend(search_results(movie_results, filter_typ))
+    if filter_typ in ['tv', 'all']:
         tv_results = my_tv.search(query)
-        results.extend(search_results(tv_results,filter_typ))
+        results.extend(search_results(tv_results, filter_typ))
     if genre_id:
-        results = filter_genre(results, genre_id)  
+        results = filter_genre(results, int(genre_id))  
     if sort_opt:
         results = sorting_it(results, sort_opt)  
+
+    return results  
 
 
     return results
@@ -162,7 +164,7 @@ def sorting_it(results, sort_by):
     if sort_by == 'popularity':
         results.sort(key=lambda x: x['popularity'], reverse=True)
     elif sort_by == 'vote_average':
-        results.sort(key=lambda x: x['vote_average'], reverse=True)
+        results.sort(key=lambda x: x['rating'], reverse=True)
     elif sort_by == 'release_date':
         results.sort(key=lambda x: x['release_date'])
     return results
