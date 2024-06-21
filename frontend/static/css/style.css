@@ -10,7 +10,7 @@
     font-family: "Rubik", sans-serif;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h3, h4, h5 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
 
@@ -140,8 +140,9 @@ label {
   height: 35vh;
 }
 
-/* .search-cards {
-} */
+.search-cards {
+  height: 57vh;
+}
 
 .cards-style{
   /* width: 13rem; */
