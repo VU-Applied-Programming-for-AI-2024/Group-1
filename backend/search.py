@@ -42,10 +42,30 @@ def media_type(id):
         pass
     
     return "unknown"
+
+def get_cast(id):
+    cast_list = []
+    if media_type(id) == 'movie':
+        try:
+            movie_credit = my_movie.credits(id)
+            for member in movie_credit['cast']:
+                cast_list.append(member.name)
+        except:
+            cast_list.append('Cast not available')
+    elif media_type(id) == "tv":
+        try:
+            tv_credit = my_tv.credits(id)
+            for member in tv_credit['cast']:
+                cast_list.append(member.name)
+        except:
+            cast_list.append('Cast not available')
+    return cast_list
+
+
 def search_results(results, typ):
     results_lst = [] 
     
-    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review']
+    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast']
     id_lst = []
     for result in results:
         results_dct = {}
@@ -106,7 +126,28 @@ def search_results(results, typ):
 
                     else:
                         results_dct[l] = 'review not available'
-        
+                    
+            if l == "author":
+                for id in id_lst:
+                    if media_type(id) == "movie" and hasattr(my_movie,'reviews'):
+                        movie_review = my_movie.reviews(id)
+                        for review in movie_review['results']:
+                            for key, value in review.items():
+                                if key == 'author':
+                                    results_dct[l] = value
+                    elif media_type(id) == "tv" and hasattr(my_tv,'reviews'):
+                        tv_review = my_tv.reviews(id)
+                        for review in tv_review['results']:
+                            for key, value in review.items():
+                                if key == 'author':
+                                    results_dct[l] = value
+                    else:
+                        results_dct[l] = "Some Author"                    
+
+            if l == "cast":
+                for id in id_lst:
+                    cast = get_cast(id)
+                    results_dct[l] = cast
         results_dct["type"] = typ
         results_lst.append(results_dct)
     return results_lst

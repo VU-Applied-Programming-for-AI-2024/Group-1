@@ -36,17 +36,17 @@
     <div class="row">
         {% for result in results %}
         <div class="col-md-4 mb-4">
+          <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date, review=result.review, author=result.author, cast=json.dumps(result.cast)) }}">
             <div class="card">
-                <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date, review = result.review) }}">
                     <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
-                </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ result.title }}</h5>
                     <p class="card-text">{{ result.overview }}</p>
                     <p class="card-text"><small class="text-muted">Release date: {{ result.release_date }}</small></p>
-                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating }}</small></p>
+                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating|round(1, 'floor')}}/10.0</small></p>
                 </div>
             </div>
+          </a>
         </div>
         {% endfor %}
     </div>

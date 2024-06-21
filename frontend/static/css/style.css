@@ -108,6 +108,7 @@ label {
   }
   footer{
     background-color: #95A5A6;
+    width: 100%;
   }
   footer p {
     color: black;
@@ -134,9 +135,13 @@ label {
   padding: 1px;
 }
 
+.trending-cards {
+  width: 20vh;
+  height: 35vh;
+}
+
 .cards-style{
   /* width: 13rem; */
-  height: auto;
   display: flex;
   justify-content: space-between;
   padding: 13px;
@@ -145,6 +150,7 @@ label {
 .carousel-control-prev-icon, .carousel-control-next-icon {
 background-color: #000000;
 color: white;
+padding: 1px;
 }
 
 /* .carousel-control-prev {
