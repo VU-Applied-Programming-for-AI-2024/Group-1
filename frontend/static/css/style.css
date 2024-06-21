@@ -127,7 +127,7 @@ label {
   } */
 
   .card-img-top {
-    height: 20vh;
+    height: 32vh;
   }
 .carousel-control-prev-icon, .carousel-control-next-icon {
   background-color: #000000;
@@ -137,11 +137,11 @@ label {
 
 .trending-cards {
   width: 20vh;
-  height: 35vh;
+  height: 44vh;
 }
 
 .search-cards {
-  height: 57vh;
+  height: 62vh;
 }
 
 .cards-style{

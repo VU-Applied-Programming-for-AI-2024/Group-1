@@ -21,13 +21,25 @@
                 <li>{{ member }}</li>
             {% endfor %}
         </ul>
-        
-
-
 
     </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Reviews</h3>
+            <div class="col-8 card mb-4 mt-3">
+                <div class="card-body fst-italic">
+                    <div>
+                        {{result.review}}
+                        <p>
+                            -{{result.author}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
 </div>
 
 {%endblock%}
