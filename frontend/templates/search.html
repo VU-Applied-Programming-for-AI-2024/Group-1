@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class='container'>
+    <h1>Search Results for "{{ query }}"</h1>
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
+        </ul>
+        <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='popularity') }}">Popularity</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='vote_average') }}">Rating</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='release_date') }}">Release Date</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        {% for result in results %}
+        <div class="col-md-4 mb-4">
+          <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date, review=result.review, author=result.author, cast=json.dumps(result.cast)) }}">
+            <div class="card search-cards">
+                    <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result.title }}</h5>
+                    {%if result.overview|length > 120 %}
+                    <p class="card-text">{{ result.overview[:120]}}...</p>
+                    {% else %}
+                    <p class="card-text">{{ result.overview}}</p>
+                    {%endif%}
+                    <p class="card-text"><small class="text-muted">Release date: {{ result.release_date }}</small></p>
+                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating|round(1, 'floor')}}/10.0</small></p>
+                </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

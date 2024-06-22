@@ -10,9 +10,10 @@
     font-family: "Rubik", sans-serif;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h3, h4, h5 {
     font-family: "Averia Gruesa Libre", system-ui;
 }
+
 body {
     background-color: #ECF0F1;
     height: 100vh;
@@ -20,14 +21,14 @@ body {
 
 a, li, ul {
     text-decoration: none;
-    color: #000000;
+    color: #000010;
     list-style-type: none;
   }
 
 
-.dropdown-menu {
-    background-color: black;
-  }
+/* .dropdown-menu {
+    background-color: rgb(255, 253, 253);
+  } */
 
 
 .hero-img{
@@ -77,10 +78,7 @@ label {
     margin-top: 13px;
   }
 
-  .carousel-control-next-icon, .carousel-control-prev-icon {
-    color: #000000;
-    background-color: #95A5A6;
-  }
+
   .login-details, .signup-details{
     display: flex;
     flex-direction: column;
@@ -101,11 +99,74 @@ label {
     border: 1px solid black;
   }
   
-  
+
+  .home-movie-card {
+    height: 20vh;
+    width: 100%;
+    background-color: #000000;
+    box-shadow: #2C3E50;
+  }
   footer{
     background-color: #95A5A6;
+    width: 100%;
   }
   footer p {
     color: black;
     text-align: center;
   }
+
+  .trending-cards {
+    width: 20vh;
+    height: 35vh;
+  }
+  /* .cards-style{
+    width: 13rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 13px;
+  } */
+
+  .card-img-top {
+    height: 32vh;
+  }
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: #000000;
+  color: white;
+  padding: 1px;
+}
+
+.trending-cards {
+  width: 20vh;
+  height: 44vh;
+}
+
+.search-cards {
+  height: 62vh;
+}
+
+.cards-style{
+  /* width: 13rem; */
+  display: flex;
+  justify-content: space-between;
+  padding: 13px;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+background-color: #000000;
+color: white;
+padding: 1px;
+}
+
+.filter, .sort {
+  background-color: #F39C12;
+  color: black;
+  align-items: center;
+  margin: 13px;
+}
+/* .carousel-control-prev {
+  left: -10%;
+}
+
+.carousel-control-next {
+  right: -10%;
+} */

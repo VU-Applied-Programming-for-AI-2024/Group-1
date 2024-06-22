@@ -1,26 +1,40 @@
 {% extends "base.html" %}
 {% block content%}
 <div class="container d-flex flex-column mx-auto">
-    <h2 class="mx-auto mt-5">signup</h2>
+    <h2 class="mx-auto mt-5">Signup</h2>
     <p class="mx-auto mt-1">Create a free Movie Matrix account</p>
 </div>
 
 <div class="signup-details">
-    <form action="POST" id="signup">
-        <label for="user">Username*: </label>
-        <input class="input-field" type="text" id="user" name="username" required>
-        <label for="email-address">Email*: </label>
-        <input class="input-field" type="text" id="email" name="email-address" required>
-        <label for="password">Password*: </label>
-        <input class="input-field" type="password" id="password" name="password" required>
-        <label for="repeat-password">Repeat Password*: </label>
-        <input class="input-field" type="password" id="password" name="password" required>
+    <form method="POST" action="{{ url_for('signup') }}" id="signup">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="input-field form-control", id="user")}}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="input-field form-control", id="password") }}
+            {% if form.password.errors %}
+            <div class="text-danger">{{ form.password.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="input-field form-control", id="confirm_password") }}
+            {% if form.confirm_password.errors %}
+            <div class="text-danger">{{ form.confirm_password.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" id="login-btn" class="btn btn-dark signup-btn">Sign Up</button>
     </form>
-    <button type="submit" id="login-btn" class="btn btn-dark signup-btn" form="signup"><a href="{{ url_for('home') }}">Sign Up</a></button>
 </div>
 
 <div class="d-flex justify-content-center">
-    <p>Already have an account <a href="{{ url_for('login') }}">Sign Up</a></p>
+    <p>Already have an account <a href="{{ url_for('login') }}">Log In</a></p>
 </div>
 
 {% endblock %}
