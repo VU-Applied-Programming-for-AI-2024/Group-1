@@ -96,7 +96,7 @@ class LoginForm(FlaskForm):
     def validate_password(self, password):
         user = User.query.filter_by(username=self.username.data).first()
         
-        if user and bcrypt.check_password_hash(user.password, password.data):
+        if user and bcrypt.check_password_hash(user.password, password.data) == False:
             raise ValidationError("Your password is incorrect")
         
 
