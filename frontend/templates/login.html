@@ -6,7 +6,7 @@
 </div>
 
 <div class="login-details mt-n2">
-    <form method="POST" action="/login" id="login-form">
+    <form method="POST" action="{{ url_for('login') }}" id="login-form">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.username.label(class="form-label") }}
