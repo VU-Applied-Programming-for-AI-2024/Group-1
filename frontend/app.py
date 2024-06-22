@@ -5,7 +5,8 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from flask_wtf.csrf import CSRFProtect
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 import requests
@@ -17,6 +18,7 @@ import json
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+csrf = CSRFProtect(app)
 api_key = '46cbbac59c440a0b0490ad2adad2b849'
 base_url = 'https://api.themoviedb.org/3'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
@@ -99,6 +101,19 @@ class LoginForm(FlaskForm):
         if user and bcrypt.check_password_hash(user.password, password.data) == False:
             raise ValidationError("Your password is incorrect")
         
+# Review model
+class Review(db.Model):
+    review_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, nullable=False)
+    user = db.relationship('User', backref='reviews')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    review = db.Column(db.String(700), nullable=False)
+
+# Flask form (flask_wtf)
+class Review_form(FlaskForm):
+    review = TextAreaField('Review')
+    sumbit = SubmitField('Submit Review')
+
 
 @app.route("/")
 def home():
@@ -153,7 +168,17 @@ def info(movie_id):
         if person['job'] == 'Director':
             director_name = person['name']
     movie_info['director'] = director_name
-    return render_template("review_page.html", data=movie_info)
+
+    form = Review_form()
+    if form.validate_on_submit():
+        review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
+        db.session.add(review)
+        db.session.commit()
+
+        return redirect(url_for('info', movie_id=movie_id))
+
+    reviews = Review.query.filter_by(movie_id=movie_id).all()
+    return render_template("review_page.html", data=movie_info, reviews=reviews, form=form)
 
 @app.route('/search_route', methods=['GET','POST'])
 def search_route():
@@ -193,8 +218,10 @@ def details(media_type):
         'cast' : cast,
         'type': media_type
     }
-    print(type(result['cast']))
+    
     return render_template('details.html', result=result, media_type=media_type)
+
+
 
 if __name__ == '__main__':
     with app.app_context():
