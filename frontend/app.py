@@ -180,6 +180,34 @@ def info(movie_id):
     reviews = Review.query.filter_by(movie_id=movie_id).all()
     return render_template("review_page.html", data=movie_info, reviews=reviews, form=form)
 
+@app.route('/update_review/<review_id>')
+@login_required()
+def update_review(review_id):
+    review = Review.query.get_or_404(review_id)
+    if review.user_id != current_user.id:
+        return redirect(url_for('info', movie_id=review.movie_id))
+    
+    form = Review_form()
+    if form.validate_on_submit():
+        review.review = form.review.data
+        db.session.commit()
+        return redirect(url_for('info', movie_id=review.movie_id))
+    else:
+        form.review.data = review.review
+    return render_template('update_review.html', form=form)
+
+@app.route('/delete_review/<review_id>')
+@login_required()
+def delete_review(review_id):
+    review = Review.query.get_or_404(review_id)
+    if review.user_id != current_user.id:
+        return redirect(url_for('info', movie_id=review.movie_id))
+
+    db.session.delete(review)
+    db.session.commit()
+    
+    return redirect(url_for('info', movie_id=review.movie_id))
+
 @app.route('/search_route', methods=['GET','POST'])
 def search_route():
     query = request.form.get('query') or request.args.get('query')
