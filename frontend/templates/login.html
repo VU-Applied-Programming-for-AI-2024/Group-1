@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block content%}
+{% block content %}
 <div class="container d-flex flex-column mx-auto">
     <h2 class="mx-auto mt-5">Login</h2>
     <p class="mx-auto mt-1">Please enter your login details below</p>
 </div>
 
 <div class="login-details mt-n2">
-    <form method="POST" action="{{ url_for('login') }}" id="login-form">
+    <form method="POST" action="/login" id="login-form">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.username.label(class="form-label") }}

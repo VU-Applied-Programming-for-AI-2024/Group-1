@@ -1,3 +1,6 @@
+from flask import Flask, render_template, redirect, request, url_for, flash
+import sys
+import os
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -5,9 +8,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
+import requests
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
+import search
+from tmdbv3api import TV, Movie 
+import json
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+api_key = '46cbbac59c440a0b0490ad2adad2b849'
+base_url = 'https://api.themoviedb.org/3'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
@@ -15,6 +26,13 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+my_movie = Movie()
+my_tv = TV()
+@app.context_processor
+def utility_processor():
+    return dict(json=json)
+
 class User(db.Model, UserMixin):
     """
     columns for table of users in database
@@ -96,7 +114,9 @@ class LoginForm(FlaskForm):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    response = f'{base_url}/trending/movie/day?api_key={api_key}'
+    trending_movies = requests.get(response).json()
+    return render_template("index.html", data = trending_movies['results'])
 
 @app.route("/genre")
 def genre():
@@ -125,9 +145,66 @@ def signup():
         return redirect(url_for('login'))
     return render_template("signup.html", form=form)
 
-@app.route("/info")
-def info():
-    return render_template("review_page.html")
+@app.route("/info/<movie_id>")
+def info(movie_id):
+    response = f'{base_url}/movie/{movie_id}?api_key={api_key}'
+    results = requests.get(response).json()
+    reponse2 = f'{base_url}/movie/{movie_id}/credits?api_key={api_key}'
+    results2 = requests.get(reponse2).json()
+    movie_info = {
+        'movie_title' : results.get('original_title'),
+        'plot' : results.get('overview'),
+        'poster_path' : f'https://image.tmdb.org/t/p/w500/{results.get("poster_path")}',
+        'release_date' : results.get('release_date'),
+        'score' : results.get('vote_average')
+    }
+    director_name = 'Not Available'
+    for person in results2.get('crew'):
+        if person['job'] == 'Director':
+            director_name = person['name']
+    movie_info['director'] = director_name
+    return render_template("review_page.html", data=movie_info)
+
+@app.route('/search_route', methods=['GET','POST'])
+def search_route():
+    query = request.form.get('query') or request.args.get('query')
+    filter_typ = request.args.get('filter_typ', "all")
+    genre_id = request.args.get('genre')
+    sort_opt = request.args.get('sort_opt')
+    results = search.search(query, filter_typ, genre_id, sort_opt)
+
+    print("Query:", query)
+    print("Results:", (results))
+    
+    return render_template('search.html', query=query, results=results)
+@app.route("/details/<media_type>")
+def details(media_type):
+    title = request.args.get("title")
+    overview = request.args.get("overview")
+    rating = request.args.get("vote_average")
+    poster_path = request.args.get("poster_path")
+    id = request.args.get("id")
+    release_date = request.args.get("release_date")
+    review = request.args.get("review")
+    author = request.args.get("author")
+    cast_json = request.args.get("cast")
+
+    cast = json.loads(cast_json) if cast_json else []
+
+    result = {
+        'id': id,
+        'title': title,
+        'overview': overview,
+        'rating': rating,
+        'poster_path': poster_path,
+        'release_date': release_date,
+        'review': review,
+        'author': author,
+        'cast' : cast,
+        'type': media_type
+    }
+    print(type(result['cast']))
+    return render_template('details.html', result=result, media_type=media_type)
 
 if __name__ == '__main__':
     with app.app_context():

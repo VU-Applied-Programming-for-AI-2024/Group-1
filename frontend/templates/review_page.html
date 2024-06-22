@@ -4,22 +4,22 @@
 <div class="container">
     <div class="row g-0">
         <div class="col-md-12">
-            <h1 class="text-center mt-4">Movie Name</h1>
-            <p class="text-center">Director</p>
-            <p class="text-center">Release date</p>
+            <h1 class="text-center mt-4">{{data.movie_title}}</h1>
+            <p class="text-center">{{data.director}}</p>
+            <p class="text-center">Release date: {{data.release_date}}</p>
         </div>
         <div class="container-fluid pt-md-4">
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <img src="../static/assets/hero_image.jpeg" alt="Movie poster." class="img-fluid mb-3">
+                    <img src="{{data.poster_path}}" alt="{{data.movie_title}} poster" class="img-fluid mb-3">
                 </div>
                 <div class="col-md-6 pt-md-4">
                     <div class="row justify-content-center">
                         <div class="col-md-8 w-100">
-                            <h3 class="pt-xs-4">Plot</h3>
-                            Pictures move consecutively.
-                            <h3 class="mt-3">Ratings: </h3>
-                            <div class="col-6 mt-3 mb-3">
+                            <h3 class="pt-xs-4">Plot: </h3>
+                            {{data.plot}}
+                            <h3 class="mt-3">Rating: {{data.score|round(1, 'floor')}}/10.0</h4>
+                            <!-- <div class="col-6 mt-3 mb-3">
                                 <strong>
 
                                     <span class="text-secondary"><i class="fa-solid fa-film"></i></span>
@@ -27,10 +27,10 @@
                                     <span class="text-secondary">Favourite </span>
                                 </strong>
 
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    <button type="button" class="btn btn-dark signup-btn"><a href="{{ url_for('signup') }}">Add
+                    <button type="button" class="btn btn-dark signup-btn"><a>Add
                             Review</a>
                     </button>
                 </div>
@@ -55,8 +55,8 @@
                                 </div>
                             </div>
                         </div>
-        </div>
+                    </div>
 
-</div>
+                </div>
 
-{% endblock %}
+                {% endblock %}
