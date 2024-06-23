@@ -70,7 +70,8 @@ a, li, ul {
 
 .signup-btn {
     background-color: #E74C3C;
-    margin-bottom: 13px;
+    margin: 13px auto;
+
 }
 
 label {

@@ -165,8 +165,6 @@ def info(movie_id):
         'poster_path' : f'https://image.tmdb.org/t/p/w500/{results.get("poster_path")}',
         'release_date' : results.get('release_date'),
         'score' : results.get('vote_average'),
-
-
     }
     director_name = 'Not Available'
     for person in results2.get('crew'):
@@ -174,9 +172,14 @@ def info(movie_id):
             director_name = person['name']
     movie_info['director'] = director_name
 
-    first_review = results3['results'][0]
-    movie_info['user_name'] = first_review['author']
-    movie_info['user_review'] = first_review['content']
+
+    if results3['results'] != [ ]:
+        first_review = results3['results'][0]
+        movie_info['user_name'] = first_review['author']
+        movie_info['user_review'] = first_review['content']
+    else:
+        first_review = None
+
 
     form = Review_form()
     if form.validate_on_submit():
@@ -186,7 +189,7 @@ def info(movie_id):
         return redirect(url_for('info', movie_id=movie_id))
 
     reviews = Review.query.filter_by(movie_id=movie_id).all()
-    return render_template("review_page.html", data=movie_info, reviews=reviews, form=form)
+    return render_template("review_page.html", data=movie_info, reviews=reviews, form=form, first_review=first_review)
 
 @app.route('/add_review/<movie_id>', methods=['POST'])
 @login_required
