@@ -112,7 +112,7 @@ class Review(db.Model):
 # Flask form (flask_wtf)
 class Review_form(FlaskForm):
     review = TextAreaField('Review')
-    sumbit = SubmitField('Submit Review')
+    submit = SubmitField('Submit Review')
 
 
 @app.route("/")
@@ -156,12 +156,17 @@ def info(movie_id):
     results = requests.get(response).json()
     reponse2 = f'{base_url}/movie/{movie_id}/credits?api_key={api_key}'
     results2 = requests.get(reponse2).json()
+    response3 = f'{base_url}/movie/{movie_id}/reviews?api_key={api_key}'
+    results3 = requests.get(response3).json()
     movie_info = {
+        'movie_id' : movie_id,
         'movie_title' : results.get('original_title'),
         'plot' : results.get('overview'),
         'poster_path' : f'https://image.tmdb.org/t/p/w500/{results.get("poster_path")}',
         'release_date' : results.get('release_date'),
-        'score' : results.get('vote_average')
+        'score' : results.get('vote_average'),
+
+
     }
     director_name = 'Not Available'
     for person in results2.get('crew'):
@@ -169,6 +174,23 @@ def info(movie_id):
             director_name = person['name']
     movie_info['director'] = director_name
 
+    first_review = results3['results'][0]
+    movie_info['user_name'] = first_review['author']
+    movie_info['user_review'] = first_review['content']
+
+    form = Review_form()
+    if form.validate_on_submit():
+        review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
+        db.session.add(review)
+        db.session.commit()
+        return redirect(url_for('info', movie_id=movie_id))
+
+    reviews = Review.query.filter_by(movie_id=movie_id).all()
+    return render_template("review_page.html", data=movie_info, reviews=reviews, form=form)
+
+@app.route('/add_review/<movie_id>', methods=['POST'])
+@login_required
+def add_review(movie_id):
     form = Review_form()
     if form.validate_on_submit():
         review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
@@ -176,12 +198,11 @@ def info(movie_id):
         db.session.commit()
 
         return redirect(url_for('info', movie_id=movie_id))
+    return render_template("review_page.html", form=form)
 
-    reviews = Review.query.filter_by(movie_id=movie_id).all()
-    return render_template("review_page.html", data=movie_info, reviews=reviews, form=form)
 
 @app.route('/update_review/<review_id>')
-@login_required()
+@login_required
 def update_review(review_id):
     review = Review.query.get_or_404(review_id)
     if review.user_id != current_user.id:
@@ -197,7 +218,7 @@ def update_review(review_id):
     return render_template('update_review.html', form=form)
 
 @app.route('/delete_review/<review_id>')
-@login_required()
+@login_required
 def delete_review(review_id):
     review = Review.query.get_or_404(review_id)
     if review.user_id != current_user.id:
@@ -205,7 +226,6 @@ def delete_review(review_id):
 
     db.session.delete(review)
     db.session.commit()
-    
     return redirect(url_for('info', movie_id=review.movie_id))
 
 @app.route('/search_route', methods=['GET','POST'])
