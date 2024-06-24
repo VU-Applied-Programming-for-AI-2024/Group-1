@@ -67,7 +67,7 @@ def get_cast(id):
 def search_results(results, typ):
     results_lst = [] 
     
-    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast']
+    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','']
     id_lst = []
     for result in results:
         results_dct = {}

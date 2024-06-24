@@ -6,9 +6,11 @@
     <div class="btn-group">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
+            <li><a class="dropdown-item {% if filter_typ == 'movie' %}active{% endif %}" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
+            <li><a class="dropdown-item {% if filter_typ == 'tv' %}active{% endif %}" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
         </ul>
+
+
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='popularity') }}">Popularity</a></li>

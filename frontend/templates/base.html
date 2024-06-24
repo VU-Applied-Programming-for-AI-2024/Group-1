@@ -45,7 +45,17 @@
             </ul>
         </ul>
         <form method="POST" action="{{ url_for('search_route') }}" class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{ request.args.get('query', '') }}">
+          <div class="btn-group me-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Filter
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item {% if request.args.get('filter_typ') == 'movie' %}active{% endif %}" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
+              <li><a class="dropdown-item {% if request.args.get('filter_typ') == 'tv' %}active{% endif %}" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
+            </ul>
+          </div>
+          <input type="hidden" name="filter_typ" id="filter_typ" value="{{ request.args.get('filter_typ', '') }}">
           <button class="btn btn-dark search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
