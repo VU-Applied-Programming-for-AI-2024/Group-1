@@ -45,6 +45,7 @@
             </ul>
         </ul>
         <form method="POST" action="{{ url_for('search_route') }}" class="d-flex" role="search">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
           <button class="btn btn-dark search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
