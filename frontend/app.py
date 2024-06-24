@@ -9,9 +9,14 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 import requests
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
+backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend'))
+sys.path.insert(0, backend_path)
 import search
-from tmdbv3api import TV, Movie 
+import genre_x
+
+
+
+from tmdbv3api import TV, Movie, Genre 
 import json
 
 
@@ -28,6 +33,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 my_movie = Movie()
 my_tv = TV()
+genre = Genre()
 @app.context_processor
 def utility_processor():
     return dict(json=json)
@@ -105,9 +111,13 @@ def home():
     trending_movies = requests.get(response).json()
     return render_template("index.html", data = trending_movies['results'])
 
-@app.route("/genre")
+@app.route("/genre", methods = ['GET','POST'])
 def genre():
-    return render_template("genre.html")
+    filter_typ = request.args.get('filter_typ')
+    genre_id = request.args.get('genre')
+    sort_opt = request.args.get('sort_opt')
+    results = genre_x.genre(filter_typ, genre_id, sort_opt)
+    return render_template("genre.html", results = results, filter_typ = filter_typ)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -158,9 +168,8 @@ def info(movie_id):
 def search_route():
     query = request.form.get('query') or request.args.get('query')
     filter_typ = request.args.get('filter_typ', "all")
-    genre_id = request.args.get('genre')
     sort_opt = request.args.get('sort_opt')
-    results = search.search(query, filter_typ, genre_id, sort_opt)
+    results = search.search(query, filter_typ, sort_opt)
 
     print("Query:", query)
     print("Results:", (results))
@@ -176,6 +185,7 @@ def details(media_type):
     release_date = request.args.get("release_date")
     review = request.args.get("review")
     author = request.args.get("author")
+    director = request.args.get("director")
     cast_json = request.args.get("cast")
 
     cast = json.loads(cast_json) if cast_json else []
@@ -190,6 +200,7 @@ def details(media_type):
         'review': review,
         'author': author,
         'cast' : cast,
+        'director': director,
         'type': media_type
     }
     print(type(result['cast']))
