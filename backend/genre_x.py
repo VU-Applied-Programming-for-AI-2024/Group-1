@@ -21,13 +21,13 @@ def genre(filter_typ, genre_name, sort_opt):
             if movie.name == genre_name:
                 genre_id = movie.id       
                 movie_results = my_discover.discover_movies({'with_genre':genre_id})
-                results.extend(filter_genre(movie_results))
+        results.append(filter_genre(movie_results))
     elif filter_typ == 'tv':
          for tv in tv_genre:
             if tv.name == genre_name:
                 genre_id = tv.id       
                 tv_results = my_discover.discover_tv_shows({'with_genre':genre_id})
-                results.extend(filter_genre(tv_results))
+                results.append(filter_genre(tv_results))
     if sort_opt:
         results = sorting_it(results, sort_opt)
     print(results)
@@ -128,4 +128,4 @@ def filter_genre(results):
                     direct = director_name(id)
                     results_dct[l] = direct
         results_lst.append(results_dct)
-    return results_lst
+genre('movie',"Action","vote_average")
