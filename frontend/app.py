@@ -164,7 +164,7 @@ def info(movie_id):
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
 
-@app.route('/search_route', methods=['GET','POST'])
+@app.route('/search_route')
 def search_route():
     query = request.form.get('query') or request.args.get('query')
     filter_typ = request.args.get('filter_typ', "all")
