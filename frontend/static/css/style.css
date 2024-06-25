@@ -109,7 +109,7 @@ label {
   }
   footer{
     background-color: #95A5A6;
-    width: 100%;
+
   }
   footer p {
     color: black;
@@ -173,6 +173,6 @@ padding: 1px;
 } */
 
 .review-form {
-width: 60%;
+width: 100%;
 height: 160px;
 }

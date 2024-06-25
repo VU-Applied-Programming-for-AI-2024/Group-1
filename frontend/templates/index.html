@@ -12,14 +12,18 @@
 </div>
 <div class="container">
   <div class="row d-flex flex-row">
-    <div
-    > 
+    <!-- Div for the carousel -->
+    <div> 
+      <!-- The actual carousel(outermost layer) -->
       <div id="carouselExample" class="carousel slide mt-4">
+        <!-- The aim is to get 5 movie cards per slide and it steps over the data in steps of 5 -->
         <div class="carousel-inner justify-content-space-evenly">
           {% set per_slide = 5 %}
           {% for i in range(0, data|length, per_slide) %}
+          <!-- The first slide  -->
           <div class="carousel-item {% if i == 0 %}active{% endif %}">
             <div class="d-flex justify-content-center">
+              <!-- The loop where slice the data to create cards for the current carousel, so first 5 then in the next iteration the next 5 and so on -->
               {% for movie in data[i:i + per_slide] %}
               <a href="{{ url_for('info', movie_id=movie.id) }}" class="cards-style">
               <div class="card trending-cards">

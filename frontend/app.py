@@ -111,7 +111,7 @@ class Review(db.Model):
 
 # Flask form (flask_wtf)
 class Review_form(FlaskForm):
-    review = TextAreaField('Review')
+    review = TextAreaField('Review', validators=[InputRequired()])
     submit = SubmitField('Submit Review')
 
 
@@ -204,7 +204,7 @@ def add_review(movie_id):
     return render_template("review_page.html", form=form)
 
 
-@app.route('/update_review/<review_id>')
+@app.route('/update_review/<review_id>', methods=['GET','POST'])
 @login_required
 def update_review(review_id):
     review = Review.query.get_or_404(review_id)
@@ -218,7 +218,7 @@ def update_review(review_id):
         return redirect(url_for('info', movie_id=review.movie_id))
     else:
         form.review.data = review.review
-    return render_template('update_review.html', form=form)
+    return render_template('update_review.html', form=form, review=review)
 
 @app.route('/delete_review/<review_id>')
 @login_required
