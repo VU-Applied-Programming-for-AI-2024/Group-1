@@ -9,14 +9,10 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
 import requests
-backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend'))
-sys.path.insert(0, backend_path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 import search
 import genre_x
-
-
-
-from tmdbv3api import TV, Movie, Genre 
+from tmdbv3api import TV, Movie 
 import json
 
 
@@ -31,9 +27,9 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 my_movie = Movie()
 my_tv = TV()
-genre = Genre()
 @app.context_processor
 def utility_processor():
     return dict(json=json)
@@ -93,16 +89,28 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
     
     def validate_user(self, username):
+        """
+        validates that users enter a username that already exists
+        param: username: what the user enters in the username input field
+        raises: ValidationError: if the user enters a username that isn't in the database
+        """
         user = User.query.filter_by(username=username.data).first()
         
         if not user:
-            raise ValidationError("Please enter a valid username")
+            flash("Please enter a valid username")
+            raise ValidationError("Invalid Username")
         
     def validate_password(self, password):
+        """
+        validates that users enter the correct password
+        param: password: what the user enters in the password input field
+        :raises: ValidationError: if the user enters an incorrect password
+        """
         user = User.query.filter_by(username=self.username.data).first()
         
-        if user and bcrypt.check_password_hash(user.password, password.data):
-            raise ValidationError("Your password is incorrect")
+        if user and bcrypt.check_password_hash(user.password, password.data) == False:
+            flash("Your password is incorrect")
+            raise ValidationError("Invalid Password")
         
 
 @app.route("/")
@@ -113,11 +121,12 @@ def home():
 
 @app.route("/genre", methods = ['GET'])
 def genre():
+    genre_name = request.args.get('genre_name')
     filter_typ = request.args.get('filter_typ')
-    genre_name = request.args.get('genre')
-    sort_opt = request.args.get('sort_opt')
+    sort_opt = request.args.get("sort_opt", 'popularity')
     results = genre_x.genre(filter_typ, genre_name, sort_opt)
-    return render_template("genre.html", result = results, filter_typ = filter_typ)
+    print(results)
+    return render_template("genre.html", results=results, genre_name=genre_name, filter_typ=filter_typ, sort_opt=sort_opt)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -127,8 +136,6 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('home'))
-        else:
-            flash("Invalid username or password")
     return render_template("login.html", form=form)
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -164,16 +171,13 @@ def info(movie_id):
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
 
-@app.route('/search_route')
+@app.route('/search_route', methods=['GET','POST'])
 def search_route():
     query = request.form.get('query') or request.args.get('query')
     filter_typ = request.args.get('filter_typ', "all")
+    genre_id = request.args.get('genre')
     sort_opt = request.args.get('sort_opt')
-    results = search.search(query, filter_typ, sort_opt)
-
-    print("Query:", query)
-    print("Results:", (results))
-    
+    results = search.search(query, filter_typ, genre_id, sort_opt)
     return render_template('search.html', query=query, results=results)
 @app.route("/details/<media_type>")
 def details(media_type):
@@ -203,7 +207,7 @@ def details(media_type):
         'director': director,
         'type': media_type
     }
-    print(type(result['cast']))
+    print(result)
     return render_template('details.html', result=result, media_type=media_type)
 
 if __name__ == '__main__':
