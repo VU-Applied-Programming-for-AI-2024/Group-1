@@ -11,15 +11,23 @@ tmdb = TMDb()
 tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
-def genre(filter_typ, genre_id, sort_opt):
+def genre(filter_typ, genre_name, sort_opt):
     sys.stdout.reconfigure(encoding='utf-8')
+    movie_genre = my_genre.movie_list()
+    tv_genre = my_genre.tv_list
     results = []
     if filter_typ == 'movie':
-        movie_results = my_discover.discover_movies({'with_genre':genre_id})
-        results.extend(filter_genre(movie_results))
+        for movie in movie_genre:
+            if movie.name == genre_name:
+                genre_id = movie.id       
+                movie_results = my_discover.discover_movies({'with_genre':genre_id})
+                results.extend(filter_genre(movie_results))
     elif filter_typ == 'tv':
-        tv_results = my_discover.discover_tv_shows({'with_genre':genre_id})
-        results.extend(filter_genre(tv_results))
+         for tv in tv_genre:
+            if tv.name == genre_name:
+                genre_id = tv.id       
+                tv_results = my_discover.discover_tv_shows({'with_genre':genre_id})
+                results.extend(filter_genre(tv_results))
     if sort_opt:
         results = sorting_it(results, sort_opt)
     print(results)

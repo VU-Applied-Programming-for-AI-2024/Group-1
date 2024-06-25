@@ -111,13 +111,13 @@ def home():
     trending_movies = requests.get(response).json()
     return render_template("index.html", data = trending_movies['results'])
 
-@app.route("/genre", methods = ['GET','POST'])
+@app.route("/genre", methods = ['GET'])
 def genre():
     filter_typ = request.args.get('filter_typ')
-    genre_id = request.args.get('genre')
+    genre_name = request.args.get('genre')
     sort_opt = request.args.get('sort_opt')
-    results = genre_x.genre(filter_typ, genre_id, sort_opt)
-    return render_template("genre.html", results = results, filter_typ = filter_typ)
+    results = genre_x.genre(filter_typ, genre_name, sort_opt)
+    return render_template("genre.html", result = results, filter_typ = filter_typ)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

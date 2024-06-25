@@ -1,49 +1,49 @@
-  {% extends "base.html" %}
-  {% block content %}
-  <div id="welcome-section" class="container-fluid  d-flex justify-content-center">
-    <h1 id="project-title" class="display-2">Movie Matrix</h1>
-    <h3 class="mx-auto">Your new go-to place for exploring movie reviews.</h3>
-    <button type="button" class="btn btn-dark signup-btn"><a href="{{ url_for('signup') }}">Sign Up</a></button>
-  </div>
+{% extends "base.html" %}
+{% block content %}
+<div id="welcome-section" class="container-fluid  d-flex justify-content-center">
+  <h1 id="project-title" class="display-2">Movie Matrix</h1>
+  <h3 class="mx-auto">Your new go-to place for exploring movie reviews.</h3>
+  <button type="button" class="btn btn-dark signup-btn"><a href="{{ url_for('signup') }}">Sign Up</a></button>
+</div>
 
-  <div class=" container text-center mt-3">
-    <img src="../static/assets/hero_image.jpeg" class="hero-img img-fluid" alt="Entrance of the cinema." />
-    <h3 class="mt-3">Trending</h3>
-  </div>
-  <div class="container">
-    <div class="row d-flex flex-row">
-      <div d-flex> 
-        <div id="carouselExample" class="carousel slide mt-4">
-          <div class="carousel-inner justify-content-space-evenly">
-            {% set per_slide = 5 %}
-            {% for i in range(0, data|length, per_slide) %}
-            <div class="carousel-item {% if i == 0 %}active{% endif %}">
-              <div class="d-flex">
-                {% for movie in data[i:i + per_slide] %}
-                <a href="{{ url_for('info', movie_id=movie.id) }}" class="cards-style">
-                <div class="card">
-                  <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} poster">
-                  <div class="card-body">
-                    <p>{{ movie.title }}</p>
-                  </div>
+<div class=" container text-center mt-3">
+  <img src="../static/assets/hero_image.jpeg" class="hero-img img-fluid" alt="Entrance of the cinema." />
+  <h3 class="mt-3">Trending</h3>
+</div>
+<div class="container">
+  <div class="row d-flex flex-row">
+    <div d-flex> 
+      <div id="carouselExample" class="carousel slide mt-4">
+        <div class="carousel-inner justify-content-space-evenly">
+          {% set per_slide = 5 %}
+          {% for i in range(0, data|length, per_slide) %}
+          <div class="carousel-item {% if i == 0 %}active{% endif %}">
+            <div class="d-flex">
+              {% for movie in data[i:i + per_slide] %}
+              <a href="{{ url_for('info', movie_id=movie.id) }}" class="cards-style">
+              <div class="card">
+                <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} poster">
+                <div class="card-body">
+                  <p>{{ movie.title }}</p>
                 </div>
-              </a>
-                {% endfor %}
               </div>
+            </a>
+              {% endfor %}
             </div>
-            {% endfor %}
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          {% endfor %}
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>
+</div>
 
-  {%endblock%}
+{%endblock%}
