@@ -3,12 +3,12 @@
 {% block content %}
 <div class='container'>
     <h1>Search Results for "{{ query }}"</h1>
-    <div class="btn-group">
+    <!-- <div class="btn-group">
         <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
-        </ul>
+        </ul> -->
         <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, sort_opt='popularity') }}">Popularity</a></li>
@@ -19,7 +19,7 @@
     <div class="row">
         {% for result in results %}
         <div class="col-md-4 mb-4">
-          <a href="{{ url_for('details', media_type=result.type, id=result.id, title=result.title, overview=result.overview, vote_average=result.rating, poster_path=result.poster_path, release_date=result.release_date, review=result.review, author=result.author, cast=json.dumps(result.cast), director = result.director) }}">
+          <a href="{{ url_for('info', movie_id=result.id, cast=json.dumps(result.cast)) }}">
             <div class="card search-cards">
                     <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
                 <div class="card-body">

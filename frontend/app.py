@@ -189,6 +189,12 @@ def info(movie_id):
             director_name = person['name']
     movie_info['director'] = director_name
 
+    cast = []
+    for person in results2.get('cast'):
+        if person['known_for_department'] == 'Acting':
+            cast.append(person['name'])
+    movie_info['cast'] = cast
+
 
     if results3['results'] != [ ]:
         first_review = results3['results'][0]
@@ -256,6 +262,7 @@ def search_route():
     sort_opt = request.args.get('sort_opt')
     results = search.search(query, filter_typ, genre_id, sort_opt)
     return render_template('search.html', query=query, results=results)
+
 @app.route("/details/<media_type>")
 def details(media_type):
     title = request.args.get("title")
