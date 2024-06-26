@@ -12,6 +12,7 @@ from flask_bcrypt import Bcrypt
 import requests
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 import search
+import genre_x
 from tmdbv3api import TV, Movie 
 import json
 
@@ -28,6 +29,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 
 my_movie = Movie()
 my_tv = TV()
@@ -90,16 +92,28 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
     
     def validate_user(self, username):
+        """
+        validates that users enter a username that already exists
+        param: username: what the user enters in the username input field
+        raises: ValidationError: if the user enters a username that isn't in the database
+        """
         user = User.query.filter_by(username=username.data).first()
         
         if not user:
-            raise ValidationError("Please enter a valid username")
+            flash("Please enter a valid username")
+            raise ValidationError("Invalid Username")
         
     def validate_password(self, password):
+        """
+        validates that users enter the correct password
+        param: password: what the user enters in the password input field
+        :raises: ValidationError: if the user enters an incorrect password
+        """
         user = User.query.filter_by(username=self.username.data).first()
         
-        if user and bcrypt.check_password_hash(user.password, password.data) == False:
-            raise ValidationError("Your password is incorrect")
+        if user and bcrypt.check_password_hash(user.password, password.data) == False == False:
+            flash("Your password is incorrect")
+            raise ValidationError("Invalid Password")
         
 # Review model
 class Review(db.Model):
@@ -121,9 +135,14 @@ def home():
     trending_movies = requests.get(response).json()
     return render_template("index.html", data = trending_movies['results'])
 
-@app.route("/genre")
+@app.route("/genre", methods = ['GET'])
 def genre():
-    return render_template("genre.html")
+    genre_name = request.args.get('genre_name')
+    filter_typ = request.args.get('filter_typ')
+    sort_opt = request.args.get("sort_opt", 'popularity')
+    results = genre_x.genre(filter_typ, genre_name, sort_opt)
+    print(results)
+    return render_template("genre.html", results=results, genre_name=genre_name, filter_typ=filter_typ, sort_opt=sort_opt)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -133,8 +152,6 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('home'))
-        else:
-            flash("Invalid username or password")
     return render_template("login.html", form=form)
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -238,10 +255,6 @@ def search_route():
     genre_id = request.args.get('genre')
     sort_opt = request.args.get('sort_opt')
     results = search.search(query, filter_typ, genre_id, sort_opt)
-
-    print("Query:", query)
-    print("Results:", (results))
-    
     return render_template('search.html', query=query, results=results)
 @app.route("/details/<media_type>")
 def details(media_type):
@@ -253,6 +266,7 @@ def details(media_type):
     release_date = request.args.get("release_date")
     review = request.args.get("review")
     author = request.args.get("author")
+    director = request.args.get("director")
     cast_json = request.args.get("cast")
 
     cast = json.loads(cast_json) if cast_json else []
@@ -267,9 +281,10 @@ def details(media_type):
         'review': review,
         'author': author,
         'cast' : cast,
+        'director': director,
         'type': media_type
     }
-    
+    print(result)
     return render_template('details.html', result=result, media_type=media_type)
 
 

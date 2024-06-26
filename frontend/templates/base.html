@@ -30,23 +30,125 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              Genres
+              Movie Genres
             </a>
-            <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Action</a></li>
+            <ul class="dropdown-menu  bg-dark">
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Action', filter_typ = 'movie') }}">Action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Adventure', filter_typ = 'movie') }}">Adventure</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Comedy', filter_typ = 'movie') }}">Comedy</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Animation', filter_typ = 'movie') }}">Animation</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Crime', filter_typ = 'movie') }}">Crime</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Documentary', filter_typ = 'movie') }}">Documentary</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Drama', filter_typ = 'movie') }}">Drama</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Family', filter_typ = 'movie') }}">Family</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Fantasy', filter_typ = 'movie') }}">Fantasy</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='History', filter_typ = 'movie') }}">History</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Horror', filter_typ = 'movie') }}">Horror</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Music', filter_typ = 'movie') }}">Music</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Mystery', filter_typ = 'movie') }}">Mystery</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Romance', filter_typ = 'movie') }}">Romance</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Science Fiction', filter_typ = 'movie') }}">Science Fiction</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='TV Movie', filter_typ = 'movie') }}">TV Movie</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='Thriller', filter_typ = 'movie') }}">Thriller</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name='War', filter_typ = 'movie') }}">War</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('genre', genre_name= 'Western', filter_typ = 'movie') }}">Western</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Adventure</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('genre') }}">Comedy</a></li>
             </ul>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                TV Genres
+              </a>
+              <ul class="dropdown-menu bg-dark">
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Action & Adventure', filter_typ = 'tv') }}">Action & Adventure</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Comedy', filter_typ = 'tv') }}">Comedy</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Animation', filter_typ = 'tv') }}">Animation</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Crime', filter_typ = 'tv') }}">Crime</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Documentary', filter_typ = 'tv') }}">Documentary</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Drama', filter_typ = 'tv') }}">Drama</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Family', filter_typ = 'tv') }}">Family</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'News', filter_typ = 'tv') }}">News</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Kids', filter_typ = 'tv') }}">Kids</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Mystrey', filter_typ = 'tv') }}">Mystery</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Reality', filter_typ = 'tv') }}">Reality</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Sci-Fi & Fantasy', filter_typ = 'tv') }}">Sci-Fi & Fantasy</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Soap', filter_typ = 'tv') }}">Soap</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Talk', filter_typ = 'tv') }}">Talk</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'War & Politics', filter_typ = 'tv') }}">War & Politics</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{{ url_for('genre', genre_name = 'Western', filter_typ = 'tv') }}">Western</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+              </ul>
         </ul>
         <form method="POST" action="{{ url_for('search_route') }}" class="d-flex" role="search">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{ request.args.get('query', '') }}">
+
           <button class="btn btn-dark search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">

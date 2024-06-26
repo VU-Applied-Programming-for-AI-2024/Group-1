@@ -1,82 +1,38 @@
 import sys
-from tmdbv3api import TMDb, Movie, TV, Genre
+from tmdbv3api import TMDb, Movie, TV, Genre, Discover
 from flask import Flask
+from search import media_type, get_cast, director_name, sorting_it
 app = Flask(__name__)
 
 
+my_genre = Genre()
+my_discover = Discover()
 tmdb = TMDb()
 tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
-def search(query, filter_typ, genre_id, sort_opt):
+def genre(filter_typ, genre_name, sort_opt):
     sys.stdout.reconfigure(encoding='utf-8')
+    movie_genre = my_genre.movie_list()
+    tv_genre = my_genre.tv_list()
     results = []
-    if filter_typ in ['movie', 'all']:
-        movie_results = my_movie.search(query)
-        results.extend(search_results(movie_results, filter_typ))
-    if filter_typ in ['tv', 'all']:
-        tv_results = my_tv.search(query)
-        results.extend(search_results(tv_results, filter_typ))
+    if filter_typ == 'movie':
+        for movie in movie_genre:
+            if movie.name == genre_name:
+                genre_id = movie.id       
+                movie_results = my_discover.discover_movies({'with_genre':genre_id})
+                results.extend(filter_genre(movie_results))
+    elif filter_typ == 'tv':
+         for tv in tv_genre:
+            if tv.name == genre_name:
+                genre_id = tv.id       
+                tv_results = my_discover.discover_tv_shows({'with_genre':genre_id})
+                results.extend(filter_genre(tv_results))
     if sort_opt:
-        results = sorting_it(results, sort_opt)  
-
-    return results  
-
-
-def media_type(id):
-    try:
-
-        my_movie.details(id)
-        return "movie"
-    
-    except:
-        pass
-    try:
-
-        my_tv.details(id)
-        return "tv"
-    
-    except:
-        pass
-    
-    return "unknown"
-
-def get_cast(id):
-    cast_list = []
-    if media_type(id) == 'movie':
-        try:
-            movie_credit = my_movie.credits(id)
-            for member in movie_credit['cast']:
-                cast_list.append(member.name)
-        except:
-            cast_list.append('Cast not available')
-    elif media_type(id) == "tv":
-        try:
-            tv_credit = my_tv.credits(id)
-            for member in tv_credit['cast']:
-                cast_list.append(member.name)
-        except:
-            cast_list.append('Cast not available')
-    return cast_list
-
-def director_name(id):
-    if media_type(id) == 'movie':
-        try: 
-            movie_cred = my_movie.credits(id)
-            for member in movie_cred['crew']:
-                if member['job'] == 'Director':
-                    return member['name']
-        except:
-            return 'Director name not available'
-    elif media_type(id) == 'tv':
-        try:
-            tv_cred = my_tv.credits(id)
-            for member in tv_cred['crew']:
-                if member['job'] == 'Director':
-                    return member['name']
-        except:
-            return 'Director name not available'
-def search_results(results, typ):
+        results = sorting_it(results, sort_opt)
+    print(results)
+    return results
+def filter_genre(results):
     results_lst = [] 
     
     lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','director']
@@ -114,6 +70,8 @@ def search_results(results, typ):
             if l == "release_date":
                 if hasattr(result,'release_date'):
                     results_dct[l] = result.release_date
+                elif hasattr(result, "first_air_date"):
+                    results_dct[l] = result.first_air_date
                 else:
                     results_dct[l] = 'Release date not available'
             if l == "popularity":
@@ -169,15 +127,6 @@ def search_results(results, typ):
                 for id in id_lst:
                     direct = director_name(id)
                     results_dct[l] = direct
-        results_dct["type"] = typ
         results_lst.append(results_dct)
     return results_lst
-    
-def sorting_it(results, sort_by):
-    if sort_by == 'popularity':
-        results.sort(key=lambda x: x['popularity'], reverse=True)
-    elif sort_by == 'vote_average':
-        results.sort(key=lambda x: x['rating'], reverse=True)
-    elif sort_by == 'release_date':
-        results.sort(key=lambda x: x['release_date'])
-    return results
+

@@ -1,73 +1,31 @@
-<!-- The titles here are placeholders and hardcoded. Once the backend is established, it will be updated based on the information from the API. -->
 {% extends "base.html" %}
-{% block content%}
-<div class="d-flex justify-content-center mt-5">
-    <h1 class="mb-4">Genre Movies</h1>
-</div>
-<div class="row">
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-  <div class="col-sm-4 mb-5">
-    <a href="{{url_for('info')}}">
-      <div class="card">
-        <img class="card-image" src="../static/assets/hero_image.jpeg" alt="Poster for the movie.">
-        <div class="card-body">
-          <h5 class="card-title">Movie name</h5>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
 
+{% block content %}
+<div class='container'>
+    <h1>Genres</h1>
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('genre', genre_name=genre_name, filter_typ=filter_typ, sort_opt='popularity') }}">Popularity</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('genre', genre_name=genre_name, filter_typ=filter_typ, sort_opt='vote_average') }}">Rating</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('genre', genre_name=genre_name, filter_typ=filter_typ, sort_opt='release_date') }}">Release Date</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        {% for result in results %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result.title }}</h5>
+                    <p class="card-text">{{ result.overview }}</p>
+                    <p class="card-text"><small class="text-muted">Release date: {{ result.release_date }}</small></p>
+                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
 
-  {% endblock %}
