@@ -222,7 +222,7 @@ def add_review(movie_id):
         review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
         db.session.add(review)
         db.session.commit()
-
+        flash('Your review was added successfully!')
         return redirect(url_for('info', movie_id=movie_id))
     return render_template("review_page.html", form=form)
 
@@ -238,6 +238,7 @@ def update_review(review_id):
     if form.validate_on_submit():
         review.review = form.review.data
         db.session.commit()
+        flash('You review was updated!')
         return redirect(url_for('info', movie_id=review.movie_id))
     else:
         form.review.data = review.review
@@ -252,6 +253,7 @@ def delete_review(review_id):
 
     db.session.delete(review)
     db.session.commit()
+    flash('Your review has been deleted. ')
     return redirect(url_for('info', movie_id=review.movie_id))
 
 @app.route('/search_route', methods=['GET','POST'])
