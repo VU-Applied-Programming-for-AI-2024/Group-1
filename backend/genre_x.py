@@ -16,22 +16,23 @@ def genre(filter_typ, genre_name, sort_opt):
     movie_genre = my_genre.movie_list()
     tv_genre = my_genre.tv_list()
     results = []
+    genre_id = None  # Initialize genre_id here
     if filter_typ == 'movie':
-        for movie in movie_genre:
-            if movie.name == genre_name:
-                genre_id = movie.id       
-                movie_results = my_discover.discover_movies({'with_genre':genre_id})
+        for movie_g in movie_genre:
+            if movie_g.name == genre_name:
+                genre_id = movie_g.id
+                movie_results = my_discover.discover_movies({'with_genres': genre_id})
                 results.extend(filter_genre(movie_results))
     elif filter_typ == 'tv':
-         for tv in tv_genre:
-            if tv.name == genre_name:
-                genre_id = tv.id       
-                tv_results = my_discover.discover_tv_shows({'with_genre':genre_id})
+        for tv_g in tv_genre:
+            if tv_g.name == genre_name:
+                genre_id = tv_g.id
+                tv_results = my_discover.discover_tv_shows({'with_genres': genre_id})
                 results.extend(filter_genre(tv_results))
     if sort_opt:
         results = sorting_it(results, sort_opt)
-    print(results)
     return results
+
 def filter_genre(results):
     results_lst = [] 
     
@@ -60,7 +61,7 @@ def filter_genre(results):
                 if hasattr(result,'vote_average'):
                     results_dct[l] = result.vote_average
                 else:
-                    results_dct[l] = "Rating not available"
+                    results_dct[l] = 0.0
 
             if l == "poster_path":
                 if hasattr(result, 'poster_path'):
@@ -73,12 +74,12 @@ def filter_genre(results):
                 elif hasattr(result, "first_air_date"):
                     results_dct[l] = result.first_air_date
                 else:
-                    results_dct[l] = 'Release date not available'
+                    results_dct[l] = '0000-00-00'
             if l == "popularity":
                 if hasattr(result,'popularity'):
                     results_dct[l] = result.popularity
                 else:
-                    results_dct[l] = 'Popularity not available'
+                    results_dct[l] = 0
             if l == 'id':
                 if hasattr(result,'id'):
                     results_dct[l] = result.id
@@ -130,3 +131,5 @@ def filter_genre(results):
         results_lst.append(results_dct)
     return results_lst
 
+genre('movie',"Comedy","")
+genre('movie',"Action","")
