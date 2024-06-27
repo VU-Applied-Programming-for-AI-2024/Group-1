@@ -3,8 +3,8 @@
 {% block content %}
 <div class='container'>
     <h1>Search Results for "{{ query }}"</h1>
-    <!-- <div class="btn-group">
-        <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+    <div class="btn-group">
+        <!-- <button class="btn btn-secondary dropdown-toggle filter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='movie') }}">Movie</a></li>
             <li><a class="dropdown-item" href="{{ url_for('search_route', query=query, filter_typ='tv') }}">TV Shows</a></li>
@@ -30,7 +30,7 @@
                     <p class="card-text">{{ result.overview}}</p>
                     {%endif%}
                     <p class="card-text"><small class="text-muted">Release date: {{ result.release_date }}</small></p>
-                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating|round(1, 'floor')}}/10.0</small></p>
+                    <p class="card-text"><small class="text-muted">Rating: {{ result.rating|round(1)}}/10.0</small></p>
                 </div>
             </div>
           </a>
