@@ -151,6 +151,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
+            flash(f'You were successfully logged in. Welcome {user.username}!')
             return redirect(url_for('home'))
     return render_template("login.html", form=form)
 
@@ -170,6 +171,7 @@ def signup():
 @app.route('/logout')
 def logout():
     logout_user()
+    flash(f'You were successfully logged out.')
     return redirect(url_for('home'))
 
 @app.route("/info/<movie_id>")
