@@ -177,7 +177,7 @@ def info(movie_id):
     results3 = requests.get(response3).json()
     movie_info = {
         'movie_id' : movie_id,
-        'movie_title' : results.get('original_title'),
+        'movie_title' : results.get('title'),
         'plot' : results.get('overview'),
         'poster_path' : f'https://image.tmdb.org/t/p/w500/{results.get("poster_path")}',
         'release_date' : results.get('release_date'),
