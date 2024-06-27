@@ -1,30 +1,41 @@
+# Import all the libraries required. 
 from flask import Flask, render_template, redirect, request, url_for, flash
 import sys
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
+from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
 import requests
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 import search
 import genre_x
 from tmdbv3api import TV, Movie 
 import json
+import psycopg2
+
+
+
+load_dotenv()
 
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
-api_key = '46cbbac59c440a0b0490ad2adad2b849'
+api_key = os.getenv('API_KEY')
 base_url = 'https://api.themoviedb.org/3'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_URL')
+# "sqlite:///database.db"
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -43,7 +54,7 @@ class User(db.Model, UserMixin):
     """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False) # Note: 80 max length here and 20 in registration form because database takes in
+    password = db.Column(db.String(256), nullable=False) # Note: 80 max length here and 20 in registration form because database takes in
                                                         # hashed version of password which is usually longer
                                         
 @login_manager.user_loader
@@ -111,9 +122,10 @@ class LoginForm(FlaskForm):
         """
         user = User.query.filter_by(username=self.username.data).first()
         
-        if user and bcrypt.check_password_hash(user.password, password.data) == False == False:
-            flash("Your password is incorrect")
-            raise ValidationError("Invalid Password")
+        if user and not bcrypt.check_password_hash(user.password, password.data):
+          flash("Your password is incorrect")
+          raise ValidationError("Invalid Password")
+
         
 # Review model
 class Review(db.Model):
@@ -160,7 +172,7 @@ def signup():
     form = RegistrationForm()
      
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -308,4 +320,4 @@ def details(media_type):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        app.run(debug=True)
+        app.run()
