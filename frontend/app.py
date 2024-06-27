@@ -167,6 +167,11 @@ def signup():
         return redirect(url_for('login'))
     return render_template("signup.html", form=form)
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
 @app.route("/info/<movie_id>")
 def info(movie_id):
     response = f'{base_url}/movie/{movie_id}?api_key={api_key}'

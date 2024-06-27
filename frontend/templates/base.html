@@ -151,13 +151,22 @@
 
           <button class="btn btn-dark search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav d-flex align-items-center">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <span class="nav-link">{{current_user.username}} | </span>
+          </li>
+          <li class="nav-item">
+            <a class="navlink" href="{{url_for('logout')}}"> Logout</a>
+          </li>
+          {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('login') }}">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
           </li>
+          {% endif %}
         </ul>
       </div>
     </div>
