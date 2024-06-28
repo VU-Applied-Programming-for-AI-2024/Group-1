@@ -1,29 +1,34 @@
 import sys
-from tmdbv3api import TMDb, Movie, TV, Genre
-from flask import Flask
-app = Flask(__name__)
-
+from tmdbv3api import TMDb, Movie, TV
+from typing import List, Dict, Any
 
 tmdb = TMDb()
 tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
-def search(query, filter_typ, genre_id, sort_opt):
+def search(query, filter_typ, sort_opt) -> List[Dict[str,Any]]:
+    """
+    param: query : A string which would be name of a movie or tv show that the user wants to search for 
+    param: filter_typ : A string through which the user can filter if they want to see only movies or only tv shows
+    param: sort_opt : A string through which the user can sort the search results based on rating, popularity, and realease date
+    reutrn: The function returns a list that contains a dictionary and with the dictionary conytaining details about the search
+    """
     sys.stdout.reconfigure(encoding='utf-8')
-    results = []
+    results: List[Dict[str,Any]] = []
     if filter_typ in ['movie', 'all']:
-        movie_results = my_movie.search(query)
+        movie_results: List = my_movie.search(query)
         results.extend(search_results(movie_results, filter_typ))
     if filter_typ in ['tv', 'all']:
-        tv_results = my_tv.search(query)
+        tv_results: List = my_tv.search(query)
         results.extend(search_results(tv_results, filter_typ))
     if sort_opt:
-        results = sorting_it(results, sort_opt)  
+        results: List = sorting_it(results, sort_opt)
+
 
     return results  
 
 
-def media_type(id):
+def media_type(id) -> str:
     try:
 
         my_movie.details(id)
@@ -41,11 +46,11 @@ def media_type(id):
     
     return "unknown"
 
-def get_cast(id):
-    cast_list = []
+def get_cast(id) -> List[str]:
+    cast_list: List[str] = []
     if media_type(id) == 'movie':
         try:
-            movie_credit = my_movie.credits(id)
+            movie_credit: Dict[str, List[Any]] = my_movie.credits(id)
             for member in movie_credit['cast']:
                 cast_list.append(member.name)
         except:
@@ -59,10 +64,10 @@ def get_cast(id):
             cast_list.append('Cast not available')
     return cast_list
 
-def director_name(id):
+def director_name(id) -> str:
     if media_type(id) == 'movie':
         try: 
-            movie_cred = my_movie.credits(id)
+            movie_cred: Dict[str,] = my_movie.credits(id)
             for member in movie_cred['crew']:
                 if member['job'] == 'Director':
                     return member['name']
@@ -76,13 +81,13 @@ def director_name(id):
                     return member['name']
         except:
             return 'Director name not available'
-def search_results(results, typ):
-    results_lst = [] 
+def search_results(results, typ) -> List[Dict[str,Any]] :
+    results_lst: List[Dict[str,Any]] = [] 
     
-    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','director']
-    id_lst = []
+    lst: List[str] = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','director']
+    id_lst: List[int] = []
     for result in results:
-        results_dct = {}
+        results_dct: Dict = {}
         if hasattr(result,"id"):
             id_lst.append(result.id)
         else:
@@ -104,7 +109,7 @@ def search_results(results, typ):
                 if hasattr(result,'vote_average'):
                     results_dct[l] = result.vote_average
                 else:
-                    results_dct[l] = "Rating not available"
+                    results_dct[l] = 0.0
 
             if l == "poster_path":
                 if hasattr(result, 'poster_path'):
@@ -115,12 +120,12 @@ def search_results(results, typ):
                 if hasattr(result,'release_date'):
                     results_dct[l] = result.release_date
                 else:
-                    results_dct[l] = 'Release date not available'
+                    results_dct[l] = '0000-00-00'
             if l == "popularity":
                 if hasattr(result,'popularity'):
                     results_dct[l] = result.popularity
                 else:
-                    results_dct[l] = 'Popularity not available'
+                    results_dct[l] = 0.0
             if l == 'id':
                 if hasattr(result,'id'):
                     results_dct[l] = result.id
@@ -173,7 +178,7 @@ def search_results(results, typ):
         results_lst.append(results_dct)
     return results_lst
     
-def sorting_it(results, sort_by):
+def sorting_it(results, sort_by) -> List[Dict[str, Any]]:
     if sort_by == 'popularity':
         results.sort(key=lambda x: x['popularity'], reverse=True)
     elif sort_by == 'vote_average':
