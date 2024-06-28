@@ -32,8 +32,7 @@ csrf = CSRFProtect(app)
 api_key = os.getenv('API_KEY')
 base_url = 'https://api.themoviedb.org/3'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_URL')
-# "sqlite:///database.db"
-app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
