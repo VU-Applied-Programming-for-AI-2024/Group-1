@@ -70,7 +70,8 @@ a, li, ul {
 
 .signup-btn {
     background-color: #E74C3C;
-    margin-bottom: 13px;
+    margin: 13px auto;
+
 }
 
 label {
@@ -108,7 +109,7 @@ label {
   }
   footer{
     background-color: #95A5A6;
-    width: 100%;
+
   }
   footer p {
     color: black;
@@ -170,3 +171,8 @@ padding: 1px;
 .carousel-control-next {
   right: -10%;
 } */
+
+.review-form {
+width: 67%;
+height: 160px;
+}

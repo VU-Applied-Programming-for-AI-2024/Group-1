@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% block content %}
+<div class="container-fluid">
+<h1 class="mt-3 text-center">Edit Review</h1>
+<div class="d-flex justify-content-center col-lg-12">
+    <form action="{{url_for('update_review', review_id=review.review_id) }}", method="POST">
+        {{form.hidden_tag()}}
+        <div>
+            {{form.review(class="review-form")}}
+        </div>
+        <div>
+            {{form.submit(class='btn btn-dark signup-btn')}}
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}
