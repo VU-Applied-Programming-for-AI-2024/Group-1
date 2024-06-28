@@ -42,7 +42,7 @@ To deploy your own Heroku app using this repository.
 - Get the URL of this database and add it to the .env file and import it into app.py. 
 
 ### Heroku
-- Create a Procfile in your root branch with the command: `web: gunicorn app:app` where the first app is the name of the flask file you are using. 
+- Create a Procfile in your root branch with the command: `web: gunicorn app:app` where the first app is the name of the flask file you are using. This file has to be in the root of the directory. 
 - Have a `runtime.txt ` with your desired python version. 
 - Make sure the files mentioned aboved(app.py, requirements.txt, runtime.txt, Procfile, and .env) are in the same folder.
 - Push these changes to Github. 
@@ -59,7 +59,7 @@ To deploy your own Heroku app using this repository.
 
 ### Limitations
 - The tv title information does not work well. You might get information about movies instead.
-- Search results when provided with random words will provide cards with titles as random object ids.
+- Search results when provided with random words will provide cards with titles that have title of a string object. 
 
 ### Future implementation
 - Like/Watchlist feature for registred users.
