@@ -20,9 +20,10 @@ The aim of the project is to provide a simple, minimalistic web application to a
 - Jacob Raphael
 - Yash Tyagi
 ## Installation details
-The project was deployed using Heroku and the PostgreSQL database is from ElephantSQL (The[link](https://group1112-c247f6969d92.herokuapp.com/) to the project if you want to just try it.) Unfortunately, ElephantSQL will be out of service next year and is not open to new users so we recommend using other services like AWS (We have access to the server till next year so we decided to use it). The steps are similar. 
+The project was deployed using Heroku and the PostgreSQL database is from ElephantSQL (The [link](https://group1112-c247f6969d92.herokuapp.com/) to the project if you want to just try it.) Unfortunately, ElephantSQL will be out of service next year and is not open to new users so we recommend using other services like AWS (We have access to the server till next year so we decided to use it). The steps are similar. 
 
 ### Requirements(general)
+Follow these guidelines based on deployment.
 1. Install all the dependencies. These are listed in the file `requirements.txt`. You can install them using `pip install -r requirements.txt`.
 2. Install dotenv to import environment variables into app.py. The command `pip install python-dotenv`. To import variables from the .env file, simply use the command `os.getenv('VAR_NAME')`
 3. Get an API_KEY from [TMDB](https://developer.themoviedb.org/docs/getting-started).
@@ -30,7 +31,8 @@ The project was deployed using Heroku and the PostgreSQL database is from Elepha
 5. Create a SECRET_KEY for the flask app. Store it in the .env file and import it into the app.py file. Add it to the .env file. 
 
 ### Local
-- To run it locally, you only need to fulfil the requirements.
+- Clone the repository using `git clone https://github.com/VU-Applied-Programming-for-AI-2024/Group-1.git`. 
+- To run it locally, fulfil the requiremets. 
 - The app.py file contains the essential code. To run the app, use the `python3 app.py` command to run the application.
 
 To deploy your own Heroku app using this repository. 
@@ -54,3 +56,12 @@ To deploy your own Heroku app using this repository.
 
 ## Architecture
 ![The architecture](/readme-assets/New%20Wireframe%203.png)
+
+### Limitations
+- The tv title information does not work 
+- Search results when provided with random words will provide cards with titles as objects. 
+
+### Future implementation
+- Like/Watchlist feature for registred users.
+- User dashboard with lists of their reviews and their likes/watchlist items.
+- Structure the code well. 
