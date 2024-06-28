@@ -9,6 +9,10 @@ The aim of the project is to provide a simple, minimalistic web application to a
 ![Wireframe](/readme-assets/New%20Wireframe%201.png)
 ![Wireframe](/readme-assets/New%20Wireframe%203.png)
 
+## Colour pallete
+![Colour Pallete](/readme-assets/Screenshot%202024-06-28%20at%2021.38.35.png)
+
+
 <hr>
 
 ## Team members
