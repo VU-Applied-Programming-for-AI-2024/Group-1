@@ -1,8 +1,7 @@
 import sys
 from tmdbv3api import TMDb, Movie, TV, Genre, Discover
-from flask import Flask
 from search import media_type, get_cast, director_name, sorting_it
-app = Flask(__name__)
+from typing import List, Dict, Any
 
 
 my_genre = Genre()
@@ -11,17 +10,17 @@ tmdb = TMDb()
 tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
-def genre(filter_typ, genre_name, sort_opt):
+def genre(filter_typ, genre_name, sort_opt)-> List[Dict[str,Any]]:
     sys.stdout.reconfigure(encoding='utf-8')
     movie_genre = my_genre.movie_list()
     tv_genre = my_genre.tv_list()
-    results = []
-    genre_id = None  # Initialize genre_id here
+    results: List[Dict[str,Any]] = []
+    genre_id: int = None  
     if filter_typ == 'movie':
         for movie_g in movie_genre:
             if movie_g.name == genre_name:
                 genre_id = movie_g.id
-                movie_results = my_discover.discover_movies({'with_genres': genre_id})
+                movie_results: List[Dict[str,Any]] = my_discover.discover_movies({'with_genres': genre_id})
                 results.extend(filter_genre(movie_results))
     elif filter_typ == 'tv':
         for tv_g in tv_genre:
@@ -34,12 +33,12 @@ def genre(filter_typ, genre_name, sort_opt):
     return results
 
 def filter_genre(results):
-    results_lst = [] 
+    results_lst: List[Dict[str,Any]] = [] 
     
-    lst = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','director']
-    id_lst = []
+    lst: List[str] = ['title','overview','rating','poster_path','release_date','popularity', 'id','review','author','cast','director']
+    id_lst: List[int] = []
     for result in results:
-        results_dct = {}
+        results_dct: Dict[str,Any] = {}
         if hasattr(result,"id"):
             id_lst.append(result.id)
         else:
@@ -131,5 +130,3 @@ def filter_genre(results):
         results_lst.append(results_dct)
     return results_lst
 
-genre('movie',"Comedy","")
-genre('movie',"Action","")

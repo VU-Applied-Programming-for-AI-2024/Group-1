@@ -175,9 +175,8 @@ def info(movie_id):
 def search_route():
     query = request.form.get('query') or request.args.get('query')
     filter_typ = request.args.get('filter_typ', "all")
-    genre_id = request.args.get('genre')
     sort_opt = request.args.get('sort_opt')
-    results = search.search(query, filter_typ, genre_id, sort_opt)
+    results = search.search(query, filter_typ, sort_opt)
     return render_template('search.html', query=query, results=results)
 @app.route("/details/<media_type>")
 def details(media_type):
