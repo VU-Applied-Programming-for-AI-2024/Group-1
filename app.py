@@ -316,48 +316,6 @@ def details(media_type):
     }
     print(result)
     return render_template('details.html', result=result, media_type=media_type)
-# TV 
-# @app.route('/add_review/<movie_id>', methods=['POST'])
-# @login_required
-# def add_review(movie_id):
-#     form = Review_form()
-#     if form.validate_on_submit():
-#         review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
-#         db.session.add(review)
-#         db.session.commit()
-#         flash('Your review was added successfully!')
-#         return redirect(url_for('info', movie_id=movie_id))
-#     return render_template("review_page.html", form=form)
-
-
-# @app.route('/update_review/<review_id>', methods=['GET','POST'])
-# @login_required
-# def update_review(review_id):
-#     review = Review.query.get_or_404(review_id)
-#     if review.user_id != current_user.id:
-#         return redirect(url_for('info', movie_id=review.movie_id))
-    
-#     form = Review_form()
-#     if form.validate_on_submit():
-#         review.review = form.review.data
-#         db.session.commit()
-#         flash('You review was updated!')
-#         return redirect(url_for('info', movie_id=review.movie_id))
-#     else:
-#         form.review.data = review.review
-#     return render_template('update_review.html', form=form, review=review)
-
-# @app.route('/delete_review/<review_id>')
-# @login_required
-# def delete_review(review_id):
-#     review = Review.query.get_or_404(review_id)
-#     if review.user_id != current_user.id:
-#         return redirect(url_for('info', movie_id=review.movie_id))
-
-#     db.session.delete(review)
-#     db.session.commit()
-#     flash('Your review has been deleted. ')
-#     return redirect(url_for('info', movie_id=review.movie_id))
 
 
 if __name__ == '__main__':
