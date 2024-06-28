@@ -6,7 +6,7 @@
     <form action="{{url_for('update_review', review_id=review.review_id) }}", method="POST">
         {{form.hidden_tag()}}
         <div>
-            {{form.review(class="review-form")}}
+            {{form.review(class="review-form-update")}}
         </div>
         <div>
             {{form.submit(class='btn btn-dark signup-btn')}}
