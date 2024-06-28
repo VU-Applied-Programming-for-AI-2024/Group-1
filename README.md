@@ -5,9 +5,14 @@ The <a href="https://group1112-c247f6969d92.herokuapp.com/">link</a> to the proj
 ## Brief description of the project
 The aim of the project is to provide a simple, minimalistic web application to allow users to explore movies and tv shows and provide information about(plot, release date, director, etc)them along with opinions of what other people who have watched them think about it and to add to them by adding their own reviews to the titles of their choice. This website is for everyone, from people who are looking for suggestions for their next movie marathon or people who simply want to share their opinion about what they have watched. 
 
-## Frontend mockup
+## Frontend 
 ![Wireframe](/readme-assets/New%20Wireframe%201.png)
-![Wireframe](/readme-assets/New%20Wireframe%203.png)
+![Home page](/readme-assets/Screenshot%202024-06-28%20at%2018.15.28.png)
+![Movie info](/readme-assets/Screenshot%202024-06-28%20at%2022.50.24.png)
+![reviews](/readme-assets/Screenshot%202024-06-28%20at%2022.50.28.png)
+![reviews-user](/readme-assets/Screenshot%202024-06-28%20at%2022.51.00.png)
+
+
 
 ## Colour pallete
 ![Colour Pallete](/readme-assets/Screenshot%202024-06-28%20at%2021.38.35.png)
@@ -55,7 +60,7 @@ To deploy your own Heroku app using this repository.
 
 
 ## Architecture
-![The architecture](/readme-assets/New%20Wireframe%203.png)
+![The architecture](/readme-assets/Untitled%20Diagram.drawio-2.png)
 
 ### Limitations
 - The tv title information does not work well. You might get information about movies instead.
