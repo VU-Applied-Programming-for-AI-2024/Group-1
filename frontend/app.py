@@ -205,12 +205,16 @@ def info(movie_id):
     for person in results2.get('crew'):
         if person['job'] == 'Director':
             director_name = person['name']
+        elif results2.get('crew') is None:
+            director_name = 'Not Available'
     movie_info['director'] = director_name
 
     cast = []
     for person in results2.get('cast'):
         if person['known_for_department'] == 'Acting':
             cast.append(person['name'])
+        elif results2.get('cast') == None:
+            cast.append('Cast info not available.')
     movie_info['cast'] = cast
 
 
