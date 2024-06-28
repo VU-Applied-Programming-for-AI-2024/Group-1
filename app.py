@@ -313,7 +313,6 @@ def details(media_type):
         'director': director,
         'type': media_type
     }
-    print(result)
     return render_template('details.html', result=result, media_type=media_type)
 
 

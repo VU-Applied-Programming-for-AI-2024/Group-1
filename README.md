@@ -58,10 +58,9 @@ To deploy your own Heroku app using this repository.
 ![The architecture](/readme-assets/New%20Wireframe%203.png)
 
 ### Limitations
-- The tv title information does not work 
-- Search results when provided with random words will provide cards with titles as objects. 
+- The tv title information does not work well. You might get information about movies instead.
+- Search results when provided with random words will provide cards with titles as random object ids.
 
 ### Future implementation
 - Like/Watchlist feature for registred users.
 - User dashboard with lists of their reviews and their likes/watchlist items.
-- Structure the code well. 

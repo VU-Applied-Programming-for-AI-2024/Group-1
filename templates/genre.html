@@ -19,7 +19,11 @@
                     <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" class="card-img-top" alt="{{ result.title }} poster">
                     <div class="card-body">
                         <h5 class="card-title">{{ result.title }}</h5>
-                        <p class="card-text">{{ result.overview }}</p>
+                        {%if result.overview|length > 120 %}
+                        <p class="card-text">{{ result.overview[:120]}}...</p>
+                        {% else %}
+                        <p class="card-text">{{ result.overview}}</p>
+                        {%endif%}
                         <p class="card-text"><small class="text-muted">Release date: {{ result.release_date }}</small></p>
                         <p class="card-text"><small class="text-muted">Rating: {{ result.rating }}</small></p>
                     </div>
