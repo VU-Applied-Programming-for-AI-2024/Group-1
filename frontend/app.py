@@ -1,16 +1,20 @@
 from flask import Flask, render_template, redirect, request, url_for, flash
 import sys
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
 import requests
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
-import search
+import search 
 import genre_x
 from tmdbv3api import TV, Movie 
 import json
@@ -111,7 +115,20 @@ class LoginForm(FlaskForm):
         if user and bcrypt.check_password_hash(user.password, password.data) == False:
             flash("Your password is incorrect")
             raise ValidationError("Invalid Password")
-        
+
+# Review model
+class Review(db.Model):
+    review_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, nullable=False)
+    user = db.relationship('User', backref='reviews')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    review = db.Column(db.String(700), nullable=False)
+
+# Flask form (flask_wtf)
+class Review_form(FlaskForm):
+    review = TextAreaField('Review', validators=[InputRequired()])
+    submit = SubmitField('Submit Review')
+
 
 @app.route("/")
 def home():
@@ -125,7 +142,6 @@ def genre():
     filter_typ = request.args.get('filter_typ')
     sort_opt = request.args.get("sort_opt", 'popularity')
     results = genre_x.genre(filter_typ, genre_name, sort_opt)
-    print(results)
     return render_template("genre.html", results=results, genre_name=genre_name, filter_typ=filter_typ, sort_opt=sort_opt)
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -171,6 +187,50 @@ def info(movie_id):
     movie_info['director'] = director_name
     return render_template("review_page.html", data=movie_info)
 
+
+@app.route('/add_review/<movie_id>', methods=['POST'])
+@login_required
+def add_review(movie_id):
+    form = Review_form()
+    if form.validate_on_submit():
+        review = Review(movie_id=movie_id, user_id=current_user.id, review=form.review.data)
+        db.session.add(review)
+        db.session.commit()
+        flash('Your review was added successfully!')
+        return redirect(url_for('info', movie_id=movie_id))
+    return render_template("review_page.html", form=form)
+
+
+@app.route('/update_review/<review_id>', methods=['GET','POST'])
+@login_required
+def update_review(review_id):
+    review = Review.query.get_or_404(review_id)
+    if review.user_id != current_user.id:
+        return redirect(url_for('info', movie_id=review.movie_id))
+    
+    form = Review_form()
+    if form.validate_on_submit():
+        review.review = form.review.data
+        db.session.commit()
+        flash('You review was updated!')
+        return redirect(url_for('info', movie_id=review.movie_id))
+    else:
+        form.review.data = review.review
+    return render_template('update_review.html', form=form, review=review)
+
+@app.route('/delete_review/<review_id>')
+@login_required
+def delete_review(review_id):
+    review = Review.query.get_or_404(review_id)
+    if review.user_id != current_user.id:
+        return redirect(url_for('info', movie_id=review.movie_id))
+
+    db.session.delete(review)
+    db.session.commit()
+    flash('Your review has been deleted. ')
+    return redirect(url_for('info', movie_id=review.movie_id))
+
+
 @app.route('/search_route', methods=['GET','POST'])
 def search_route():
     query = request.form.get('query') or request.args.get('query')
@@ -182,7 +242,7 @@ def search_route():
 def details(media_type):
     title = request.args.get("title")
     overview = request.args.get("overview")
-    rating = request.args.get("vote_average")
+    rating = float(request.args.get("vote_average"))
     poster_path = request.args.get("poster_path")
     id = request.args.get("id")
     release_date = request.args.get("release_date")
@@ -202,14 +262,14 @@ def details(media_type):
         'release_date': release_date,
         'review': review,
         'author': author,
-        'cast' : cast,
+        'cast': cast,
         'director': director,
         'type': media_type
     }
-    print(result)
     return render_template('details.html', result=result, media_type=media_type)
+
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        db.create_all() 
         app.run(debug=True)

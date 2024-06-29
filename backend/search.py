@@ -11,7 +11,7 @@ def search(query, filter_typ, sort_opt) -> List[Dict[str,Any]]:
     param: query : A string which would be name of a movie or tv show that the user wants to search for 
     param: filter_typ : A string through which the user can filter if they want to see only movies or only tv shows
     param: sort_opt : A string through which the user can sort the search results based on rating, popularity, and realease date
-    reutrn: The function returns a list that contains a dictionary and with the dictionary t
+    reutrn: The function returns a list that contains a dictionary and with the dictionary conytaining details about the search
     """
     sys.stdout.reconfigure(encoding='utf-8')
     results: List[Dict[str,Any]] = []
@@ -29,6 +29,11 @@ def search(query, filter_typ, sort_opt) -> List[Dict[str,Any]]:
 
 
 def media_type(id) -> str:
+    """
+    param: Id : Id of a movie or Tv show in the api 
+    reutrn: The function returns a string telling us about the 
+    """
+    
     try:
 
         my_movie.details(id)
@@ -109,7 +114,7 @@ def search_results(results, typ) -> List[Dict[str,Any]] :
                 if hasattr(result,'vote_average'):
                     results_dct[l] = result.vote_average
                 else:
-                    results_dct[l] = "Rating not available"
+                    results_dct[l] = 0.0
 
             if l == "poster_path":
                 if hasattr(result, 'poster_path'):
@@ -120,12 +125,12 @@ def search_results(results, typ) -> List[Dict[str,Any]] :
                 if hasattr(result,'release_date'):
                     results_dct[l] = result.release_date
                 else:
-                    results_dct[l] = 'Release date not available'
+                    results_dct[l] = '0000-00-00'
             if l == "popularity":
                 if hasattr(result,'popularity'):
                     results_dct[l] = result.popularity
                 else:
-                    results_dct[l] = 'Popularity not available'
+                    results_dct[l] = 0.0
             if l == 'id':
                 if hasattr(result,'id'):
                     results_dct[l] = result.id

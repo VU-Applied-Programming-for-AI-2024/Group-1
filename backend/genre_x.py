@@ -1,5 +1,7 @@
 import sys
+import os
 from tmdbv3api import TMDb, Movie, TV, Genre, Discover
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../backend')))
 from search import media_type, get_cast, director_name, sorting_it
 from typing import List, Dict, Any
 
@@ -11,6 +13,9 @@ tmdb.api_key = '46cbbac59c440a0b0490ad2adad2b849'
 my_movie = Movie()
 my_tv = TV()
 def genre(filter_typ, genre_name, sort_opt)-> List[Dict[str,Any]]:
+    """
+    
+    """
     sys.stdout.reconfigure(encoding='utf-8')
     movie_genre = my_genre.movie_list()
     tv_genre = my_genre.tv_list()
